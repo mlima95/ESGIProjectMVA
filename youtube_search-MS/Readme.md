@@ -17,7 +17,7 @@ Run on your terminal
 
 ###### Run Project
 
-Go in mysite directory. Run migration and start server local 
+Go in mysite myAPI. Run migration and start server local 
 
 1. ```python manage.py migrate```
 2. ```python manage.py runserver```
