@@ -26,7 +26,7 @@ Go in mysite directory. Run migration and start server local
 
 Two endpoint exist on this API :
 
-1. http://localhost:8000/youtube/ 
+1. http://localhost:8000/youtube/createKeyWord
     - POST method. Required params 'q' on body
 2. http://0.0.0.0:8000/youtube/findVideo 
     - GET method. required params 'q' and 'keyApi'

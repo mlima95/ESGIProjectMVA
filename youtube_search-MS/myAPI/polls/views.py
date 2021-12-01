@@ -2,7 +2,7 @@ from polls.models import Search
 from django.http import JsonResponse
 import requests
 import json
-from mysite.settings import BASE_URL
+from api.settings import BASE_URL
 from django.views.decorators.csrf import csrf_exempt
 from polls.status_return import response_data
 
