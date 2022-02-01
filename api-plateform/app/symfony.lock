@@ -13,6 +13,9 @@
             "./src/Entity/.gitignore"
         ]
     },
+    "brick/math": {
+        "version": "0.9.3"
+    },
     "doctrine/annotations": {
         "version": "1.13",
         "recipe": {
@@ -180,6 +183,12 @@
     "psr/log": {
         "version": "3.0.0"
     },
+    "ramsey/collection": {
+        "version": "1.2.2"
+    },
+    "ramsey/uuid": {
+        "version": "4.2.3"
+    },
     "symfony/asset": {
         "version": "v6.0.3"
     },
@@ -298,6 +307,9 @@
     "symfony/polyfill-php81": {
         "version": "v1.24.0"
     },
+    "symfony/polyfill-uuid": {
+        "version": "v1.24.0"
+    },
     "symfony/property-access": {
         "version": "v6.0.3"
     },
@@ -374,6 +386,9 @@
             "./config/packages/twig.yaml",
             "./templates/base.html.twig"
         ]
+    },
+    "symfony/uid": {
+        "version": "v6.0.3"
     },
     "symfony/validator": {
         "version": "6.0",
