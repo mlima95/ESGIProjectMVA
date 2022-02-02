@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  ms-planificator:
+    image: node:16-alpine3.11
+    tty: true
+    ports:
+      - "3000:3000"
+    env_file:
+      - src/.env
+    volumes:
+      - .:/home/node/app
+    depends_on:
+      - postgres
+    working_dir: /home/node/app
+    command: sh -c "npm install --no-update-notifier; npm start --no-update-notifier"
+
+  postgres:
+    image: postgres:13.3-alpine
+    environment:
+      POSTGRES_DB: app
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./db-data:/var/lib/postgresql/data:rw
