@@ -3,8 +3,6 @@ const VideoController = require('../controllers/VideoController')
 const router = express.Router();
 
 router.post('/add-queue', VideoController.create);
-router.get('/failed', VideoController.findAllFailed);
-router.get('/downloaded', VideoController.findAllDownloaded);
-router.get('/pending', VideoController.findAllPending);
+router.get('/status', VideoController.findAllByStatus);
 
 module.exports = router

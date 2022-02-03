@@ -3,7 +3,7 @@ const {addToDownloadQueue} = require('../service/downloader-service.js');
 
 // Create and Save a new videoData
 exports.create = async (req, res) => {
-    if (!req.body.email && !req.body.videoId && !req.body.dateOfUpload) {
+    if (!req.body.videoId && !req.body.dateOfUpload) {
         res.status(400).send({ message: "Content can not be empty!" });
     }
 
@@ -24,34 +24,39 @@ exports.create = async (req, res) => {
 };
 
 // Retrieve all videoData from the database.
-exports.findAllPending = async (req, res) => {
+exports.findAllByStatus = async (req, res) => {
     try {
-        const videoData = await VideoDataModel.find({status: 0});
+        if (!req.params.idStatus ) {
+            res.status(400).send({ message: "Missing params idStatus" });
+        }
+        const videoData = await VideoDataModel.find({ 'status': req.params.idStatus });
         res.status(200).json(videoData);
+
     } catch(error) {
         res.status(404).json({message: error.message});
     }
 };
 
-// Retrieve all videoData from the database.
-exports.findAllFailed = async (req, res) => {
-    try {
-        const videoData = await VideoDataModel.find({status: {$gte: 99}});
-        res.status(200).json(videoData);
-    } catch(error) {
-        res.status(404).json({message: error.message});
-    }
-};
 
-// Retrieve all videoData from the database.
-exports.findAllDownloaded = async (req, res) => {
-    try {
-        const videoData = await VideoDataModel.find({status: 1});
-        res.status(200).json(videoData);
-    } catch(error) {
-        res.status(404).json({message: error.message});
-    }
-};
+// // Retrieve all videoData from the database.
+// exports.findAllPending = async (req, res) => {
+//     try {
+//         const videoData = await VideoDataModel.find({status: 0});
+//         res.status(200).json(videoData);
+//     } catch(error) {
+//         res.status(404).json({message: error.message});
+//     }
+// };
+//
+// // Retrieve all videoData from the database.
+// exports.findAllDownloaded = async (req, res) => {
+//     try {
+//         const videoData = await VideoDataModel.find({status: 1});
+//         res.status(200).json(videoData);
+//     } catch(error) {
+//         res.status(404).json({message: error.message});
+//     }
+// };
 /*
 // Find a single User with an id
 exports.findVideoOne = async (req, res) => {

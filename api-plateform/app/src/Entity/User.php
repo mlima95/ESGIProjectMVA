@@ -17,7 +17,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     collectionOperations: [
         'get' => [
             "security" => "is_granted('ROLE_ADMIN')",
-            "security_message" => "Only admins can add fyttytytty.",
+            "security_message" => "You are not admin",
             'normalization_context' => ['groups' => ["read:User"]]
         ],
         'post' => ['denormalization_context' => ['groups' => ["write:User"]]]
@@ -41,7 +41,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private string $uuid;
 
     #[Groups(["read:User", "write:User"])]
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
     private string $username;
 
     #[Groups(["write:User"])]
