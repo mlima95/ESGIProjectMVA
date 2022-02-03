@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -13,9 +14,18 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[ApiResource(
-    denormalizationContext: ['groups' => ['write']],
-    normalizationContext: ['groups' => ['read']]
-
+    collectionOperations: [
+        'get' => [
+            "security" => "is_granted('ROLE_ADMIN')",
+            "security_message" => "Only admins can add fyttytytty.",
+            'normalization_context' => ['groups' => ["read:User"]]
+        ],
+        'post' => ['denormalization_context' => ['groups' => ["write:User"]]]
+    ],
+    itemOperations: [
+        'get',
+        'delete'
+    ]
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -25,26 +35,39 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ApiProperty(identifier: false)]
     private int $id;
 
-    #[Groups(["read", "write"])]
+    #[Groups(["read:User"])]
     #[ORM\Column(type: 'uuid', unique: true)]
     #[ApiProperty(identifier: true)]
     private string $uuid;
 
-    #[Groups(["read", "write"])]
+    #[Groups(["read:User", "write:User"])]
     #[ORM\Column(type: 'string', length: 255)]
-    private string $email;
+    private string $username;
 
-    #[Groups(["write"])]
+    #[Groups(["write:User"])]
     #[ORM\Column(type: 'string', length: 255)]
     private string $password;
 
-    #[Groups(["read", "write"])]
+    #[Groups(["read:User"])]
     #[ORM\Column(type: 'json')]
     private array $roles = [];
+
+
+    public function __construct()
+    {
+        $this->uuid = Uuid::uuid4()->toString();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId(string $id): self
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getUuid(): ?string
@@ -59,14 +82,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getEmail(): ?string
+    public function getUsername(): ?string
     {
-        return $this->email;
+        return $this->username;
     }
 
-    public function setEmail(string $email): self
+    public function setUsername(string $username): self
     {
-        $this->email = $email;
+        $this->username = $username;
 
         return $this;
     }
@@ -109,6 +132,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getUserIdentifier(): string
     {
-        return $this->email;
+        return $this->username;
     }
+
 }
