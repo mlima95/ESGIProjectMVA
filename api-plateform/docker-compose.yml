@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 
 services:
 
@@ -9,11 +9,15 @@ services:
       - "8888:80"
     depends_on:
       - database
+    env_file:
+      - ../.common-env
     volumes:
       - ./docker/vhosts:/etc/apache2/sites-enabled
       - ./app:/var/www
-
-###> doctrine/doctrine-bundle ###
+    networks:
+      - api-network
+      - local-network
+  ###> doctrine/doctrine-bundle ###
   database:
     image: postgres:${POSTGRES_VERSION:-13}-alpine
     environment:
@@ -27,9 +31,18 @@ services:
       - db-data:/var/lib/postgresql/data:rw
       # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
       # - ./docker/db/data:/var/lib/postgresql/data:rw
+    networks:
+      - local-network
 ###< doctrine/doctrine-bundle ###
 
 volumes:
 ###> doctrine/doctrine-bundle ###
   db-data:
 ###< doctrine/doctrine-bundle ###
+
+
+networks:
+  api-network:
+    name: project_network
+  local-network:
+    driver: bridge

@@ -1,0 +1,10 @@
+
+#####  API URLs #####
+API_BASE_URL=http://php:80/api
+API_URI_USERS=users
+API_URI_STORED_VIDEOS=stored_videos
+
+##### Microservice youtube downloader #####
+MS_YT_DOWNLOADER_BASE_URL=http://youtube_downloader:3000/
+MS_YT_DOWNLOADER_URI_STORED_VIDEOS_STATUS=video/status
+MS_YT_DOWNLOADER_URI_STORED_VIDEOS_QUEUE=video/add-queue
