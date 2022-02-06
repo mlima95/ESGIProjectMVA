@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Action\NotFoundAction;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\UserRepository;
@@ -23,7 +24,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
         'post' => ['denormalization_context' => ['groups' => ["write:User"]]]
     ],
     itemOperations: [
-        'get',
+        'get' => [
+            'controller' => NotFoundAction::class,
+            'read' => false,
+            'output' => false,
+        ],
         'delete'
     ]
 )]

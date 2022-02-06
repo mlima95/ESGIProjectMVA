@@ -37,6 +37,7 @@ class HTTPService {
             $urlParamed = $this->paramURL($url, $data);
         }
 
+
         $response = $this->httpClient->request('GET', $urlParamed, [
             'headers' => [
                 'Accept' => 'application/json'

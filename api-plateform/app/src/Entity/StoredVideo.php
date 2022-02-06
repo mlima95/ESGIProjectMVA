@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Action\NotFoundAction;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints\DateTime;
@@ -14,7 +15,13 @@ use Symfony\Component\Validator\Constraints\DateTime;
             'normalization_context' => ['groups' => ["read:StoredVideo"]]
         ]
     ],
-    itemOperations: ['get']
+    itemOperations: [
+        'get' => [
+            'controller' => NotFoundAction::class,
+            'read' => false,
+            'output' => false,
+        ]
+    ]
 )]
 class StoredVideo
 {

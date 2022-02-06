@@ -14,11 +14,13 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 class StoredVideoCallerService {
 
     private HTTPService $httpService;
-    private string $url = CONSTANT::URL_MICRO_SERVICE_STORAGE_VIDEO;
+
+    private string $url;
 
     public function __construct(HTTPService $httpService)
     {
         $this->httpService = $httpService;
+        $this->url = getenv(CONSTANT::MS_YT_DOWNLOADER_BASE_URL) . getenv(CONSTANT::MS_YT_DOWNLOADER_URI_STORED_VIDEOS_STATUS);
     }
 
     /**
