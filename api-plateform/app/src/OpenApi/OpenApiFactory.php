@@ -17,18 +17,25 @@ class OpenApiFactory implements OpenApiFactoryInterface
     public function __invoke(array $context = []): OpenApi
     {
         $openApi = $this->decorated->__invoke($context);
-        $pathItem = $openApi->getPaths()->getPath('/api/stored_videos');
-        $operation = $pathItem->getGet();
-
-        $openApi->getPaths()->addPath('/api/stored_videos', $pathItem->withGet(
-            $operation->withParameters(array_merge(
-                $operation->getParameters(),
+        $paths = $openApi->getPaths();
+        /****************** StoredVideo ********************/
+        // Add Get collection
+        $storedVideoGetColPath = $paths->getPath('/api/stored_videos');
+        $storedVideoGetColOperation = $storedVideoGetColPath->getGet();
+        $openApi->getPaths()->addPath('/api/stored_videos', $storedVideoGetColPath->withGet(
+            $storedVideoGetColOperation->withParameters(array_merge(
+                $storedVideoGetColOperation->getParameters(),
                 [new Model\Parameter('status', 'query', 'Status of Storedvideo', true)]
             ))
         ));
-
         $openApi = $openApi->withInfo((new Model\Info('Status', 'v1', 'Status of Storedvideo'))->withExtensionProperty('info-key', 'Int status'));
 
+        // Hide hidden item
+        foreach ($openApi->getPaths()->getPaths() as $key => $path) {
+            if ($path->getGet() && $path->getGet()->getSummary() === 'hidden') {
+                $openApi->getPaths()->addPath($key, $path->withGet(null));
+            }
+        }
         return $openApi;
     }
 }

@@ -20,6 +20,10 @@ use Symfony\Component\Validator\Constraints\DateTime;
             'controller' => NotFoundAction::class,
             'read' => false,
             'output' => false,
+            'openapi_context' => [
+                'summary' => 'hidden'
+            ]
+
         ]
     ]
 )]

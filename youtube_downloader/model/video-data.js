@@ -4,12 +4,12 @@ const { v4: uuidv4} = require('uuid');
 const schema = new mongoose.Schema({
     videoId: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     filePath: {
         type: String,
-        required: false,
-        unique: true
+        require: false
     },
     dateOfUpload: {
         type: String,
