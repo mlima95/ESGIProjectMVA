@@ -35,7 +35,15 @@ exports.findAllByStatus = async (req, res) => {
             return;
         }
         const videoData = await VideoDataModel.find({ 'status': req.query.status });
-        res.status(200).json(videoData);
+        const respond = [];
+        // Prepare to data to be send
+        for(const vid of videoData){
+            respond.push({
+                videoId: vid.videoId,
+                dateOfUpload: vid.dateOfUpload
+            })
+        }
+        res.status(200).json(respond);
 
     } catch(error) {
         res.status(404).json({message: error.message});

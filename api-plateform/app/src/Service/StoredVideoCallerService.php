@@ -24,11 +24,14 @@ class StoredVideoCallerService {
     }
 
     /**
-     * @throws TransportExceptionInterface
+     * @param StoredVideo[]
+     * @return mixed
      * @throws JsonException
+     * @throws TransportExceptionInterface
      */
-    public function createStoredVideo(StoredVideo $stoVid){
-        return $this->httpService->postOperation($this->url, $stoVid);
+    public function createStoredVideo(array $stoVids): mixed
+    {
+        return $this->httpService->postOperation($this->url, $stoVids);
     }
 
     /**
