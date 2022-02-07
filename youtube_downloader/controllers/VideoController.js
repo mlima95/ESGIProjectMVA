@@ -1,35 +1,40 @@
 const VideoDataModel = require('../model/video-data')
-const {addToDownloadQueue} = require('../service/downloader-service.js');
 
 // Create and Save a new videoData
 exports.create = async (req, res) => {
-    if (!req.body.videoId && !req.body.dateOfUpload) {
+
+    if (!req.body.length || !req.body[0].videoId && !req.body[0].dateOfUpload) {
         res.status(400).send({ message: "Content can not be empty!" });
+        return;
     }
 
-    const videoData = new VideoDataModel({
-        videoId: req.body.videoId,
-        dateOfUpload: req.body.dateOfUpload
-    });
-
-    await videoData.save().then(data => {
-        videoData.mongoData = data
-        addToDownloadQueue(videoData)
-        res.sendStatus(200);
-    }).catch(err => {
-        res.status(500).send({
-            message: err.message || "Some error occurred while creating videoData"
+    for(const vid of req.body){
+        const videoData = new VideoDataModel({
+            videoId: vid.videoId,
+            dateOfUpload: vid.dateOfUpload
         });
-    });
+        await videoData.save().catch(err => {
+            res.status(500).send({
+                message: err.message || "Some error occurred while creating videoData"
+            });
+        });
+    }
+
+    res.sendStatus(200);
+
+
+
 };
 
 // Retrieve all videoData from the database.
 exports.findAllByStatus = async (req, res) => {
     try {
-        if (!req.params.idStatus ) {
-            res.status(400).send({ message: "Missing params idStatus" });
+        console.log(req.query)
+        if (!req.query.status) {
+            res.status(400).send({ message: "Missing params Status" });
+            return;
         }
-        const videoData = await VideoDataModel.find({ 'status': req.params.idStatus });
+        const videoData = await VideoDataModel.find({ 'status': req.query.status });
         res.status(200).json(videoData);
 
     } catch(error) {

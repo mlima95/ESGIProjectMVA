@@ -1,11 +1,11 @@
 var createError = require('http-errors');
 var express = require('express');
-var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 require("dotenv").config();
 const dbConfig = require('./config/db.config.js');
 const mongoose = require('mongoose');
+const cronService = require('./service/cron-service.js');
 
 var videoRouter = require('./routes/VideoRouter');
 
@@ -16,18 +16,17 @@ app.use(express.urlencoded({extended: false}));
 
 app.use(cookieParser());
 
-
 mongoose.Promise = global.Promise;
 
 mongoose.connect(dbConfig.url, {
     useNewUrlParser: true
 }).then(() => {
     console.log("Databse Connected Successfully!!");
+    cronService.start();
 }).catch(err => {
     console.log('Could not connect to the database', err);
     process.exit();
 });
-
 
 app.use('/video', videoRouter);
 
@@ -47,5 +46,7 @@ app.use(function (err, req, res, next) {
         message: err.message,
         error: err
     });});
+
+
 
 module.exports = app;
