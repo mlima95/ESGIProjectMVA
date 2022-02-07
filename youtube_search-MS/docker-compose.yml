@@ -18,4 +18,13 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-    - mongodb
+      - mongodb
+    networks:
+      - api-network
+      - local-network
+
+networks:
+  api-network:
+    name: project_network
+  local-network:
+    driver: bridge
