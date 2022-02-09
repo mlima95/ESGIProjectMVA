@@ -17,6 +17,7 @@ services:
     networks:
       - api-network
       - local-network
+      - api-front
   ###> doctrine/doctrine-bundle ###
   database:
     image: postgres:${POSTGRES_VERSION:-13}-alpine
@@ -44,5 +45,7 @@ volumes:
 networks:
   api-network:
     name: project_network
+  api-front:
+    name: api_front_network
   local-network:
     driver: bridge
