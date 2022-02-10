@@ -40,7 +40,8 @@ exports.findAllByStatus = async (req, res) => {
         for(const vid of videoData){
             respond.push({
                 videoId: vid.videoId,
-                dateOfUpload: vid.dateOfUpload
+                dateOfUpload: vid.dateOfUpload,
+                status: vid.status
             })
         }
         res.status(200).json(respond);

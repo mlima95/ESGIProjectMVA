@@ -1,7 +1,8 @@
 import { isArray, isObject, isUndefined, forEach } from "lodash";
-import { ENTRYPOINT } from "../config/entrypoint";
+import {ENTRYPOINT} from "../config/entrypoint";
 import SubmissionError from "../error/SubmissionError";
 import {getCurrentUser} from './utils.js';
+import { normalize } from './hydra';
 
 const MIME_TYPE = "application/ld+json";
 
@@ -53,8 +54,7 @@ export default function fetchApi(id, options = {}, needAuth = true) {
     id = `${id}?${queryString}`;
   }
 
-  const url = ENTRYPOINT + '/' + id
-  console.log([id, ENTRYPOINT, url, needAuth])
+  const url = ENTRYPOINT + '/' + resolveEndpointSlug(id);
   return global.fetch(url.toString(), options).then((response) => {
     if (response.ok) return response;
 
@@ -70,4 +70,14 @@ export default function fetchApi(id, options = {}, needAuth = true) {
       throw new SubmissionError(errors);
     });
   });
+}
+
+function resolveEndpointSlug(endpoint){
+  if(endpoint.length >=4 ) {
+    const slug = endpoint.substring(0, 5);
+    if(slug === '/api/'){
+      return endpoint.substring(5);
+    }
+  }
+  return endpoint
 }

@@ -15,12 +15,14 @@ import auth from './store/modules/auth/'
 // Other
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/css/main.css';
+import filters from './filters';
 
 
 Vue.config.productionTip = false;
 
 Vue.use(VueRouter);
 Vue.use(Vuex);
+Vue.use(filters)
 
 // Add routes to VueRouter
 const router = new VueRouter({

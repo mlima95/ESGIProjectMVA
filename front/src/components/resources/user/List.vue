@@ -1,109 +1,158 @@
 <template>
   <div>
-    <h1>User List</h1>
-
+    <h1>Liste des utilisateurs</h1>
     <div
       v-if="isLoading"
-      class="alert alert-info">Loading...</div>
+      class="alert alert-info">Chargement en cours...
+    </div>
     <div
       v-if="deletedItem"
-      class="alert alert-success">{{ deletedItem['@id'] }} deleted.</div>
+      class="alert alert-success">L'utilisateur {{ deletedItem['username'] }} a été supprimé.
+    </div>
     <div
       v-if="error"
-      class="alert alert-danger">{{ error }}</div>
+      class="alert alert-danger">Erreur : {{ error }}
+    </div>
 
-    <p>
-<!--      <router-link-->
-<!--        :to="{ name: 'UserCreate' }"-->
-<!--        class="btn btn-primary">Create</router-link>-->
-    </p>
-
+    <div class="bg-light clearfix">
+      <button
+        @click="createUser('submitter',1)"
+        class="btn btn-info mr1"><i v-if="createIsLoading && pressedCreatedButton === 1" class="fa fa-circle-o-notch fa-spin" style="font-size:24px"></i>Générer un Submitter
+      </button>
+      <button
+        @click="createUser('validator', 2)"
+        class="btn btn-success mr1"><i v-if="createIsLoading && pressedCreatedButton === 2" class="fa fa-circle-o-notch fa-spin" style="font-size:24px"></i>Générer un Validator
+      </button>
+      <button
+        @click="createUser('admin', 3)"
+        class="btn btn-warning mr1"><i v-if="createIsLoading && pressedCreatedButton === 3" class="fa fa-circle-o-notch fa-spin" style="font-size:24px"></i>Générer un Admin
+      </button>
+    </div>
+      <Modal
+        v-show="showCreatedModal"
+        @close="toggleModal()"
+      >
+        <template v-slot:header>
+          Utilisateur créé !
+        </template>
+        <template v-slot:body v-bind:user="user">
+          Voici les credentials pour cet utilisateur : {{ user.username + ':' + user.password }}
+        </template>
+      </Modal>
     <table class="table table-responsive table-striped table-hover">
       <thead>
-        <tr>
-          <th>uuid</th>
-          <th>username</th>
-          <th>roles</th>
-          <th colspan="2"></th>
-        </tr>
+      <tr>
+        <th>UUID</th>
+        <th>Username</th>
+        <th>Roles</th>
+        <th colspan="2"></th>
+      </tr>
       </thead>
       <tbody>
-        <tr
-          v-for="item in items"
-          :key="item['@id']">
+      <tr
+        v-for="item in items"
+        :key="item['@id']">
         <td>
-            {{ item['uuid'] }}
+          {{ item['uuid'] }}
         </td>
         <td>
-            {{ item['username'] }}
+          {{ item['username'] }}
         </td>
         <td>
-            {{ item['roles'] }}
+          <span :class="chooseRoleClass(item.roles)">{{ item['roles'][0] }}</span>
         </td>
-          <td>
-            X
-          </td>
-        </tr>
+        <td>
+          <button
+            class="btn btn-danger"
+            @click="deleteItem(item)">Supprimer <i v-if="delIsLoading && item['@id'] === currentlyDeletingItem['@id']" class="fa fa-circle-o-notch fa-spin" style="font-size:24px"></i>
+          </button>
+        </td>
+      </tr>
       </tbody>
     </table>
-
-    <nav aria-label="Page navigation" v-if="view">
-      <router-link
-        :to="view['hydra:first'] ? view['hydra:first'] : 'UserContactList'"
-        :class="{ disabled: !view['hydra:previous'] }"
-        class="btn btn-primary">
-        <span aria-hidden="true">&lArr;</span> First
-      </router-link>
-      &nbsp;
-      <router-link
-        :to="!view['hydra:previous'] || view['hydra:previous'] === view['hydra:first'] ? 'UserList' : view['hydra:previous']"
-        :class="{ disabled: !view['hydra:previous'] }"
-        class="btn btn-primary">
-        <span aria-hidden="true">&larr;</span> Previous
-      </router-link>
-
-      <router-link
-        :to="view['hydra:next'] ? view['hydra:next'] : '#'"
-        :class="{ disabled: !view['hydra:next'] }"
-        class="btn btn-primary">
-        Next <span aria-hidden="true">&rarr;</span>
-      </router-link>
-
-      <router-link
-        :to="view['hydra:last'] ? view['hydra:last'] : '#'"
-        :class="{ disabled: !view['hydra:next'] }"
-        class="btn btn-primary">
-        Last <span aria-hidden="true">&rArr;</span>
-      </router-link>
-    </nav>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import { mapFields } from 'vuex-map-fields';
+import {mapActions} from 'vuex';
+import {mapFields} from 'vuex-map-fields';
+import {generateRandomStr, ROLE} from '../../../utils/utils.js';
+import Modal from '../../modal/Modal.vue';
 
 export default {
+  components: {
+    Modal,
+  },
   computed: {
-      ...mapFields('user/del', {
-          deletedItem: 'deleted',
-      }),
-      ...mapFields('user/list', {
-          error: 'error',
-          items: 'items',
-          isLoading: 'isLoading',
-          view: 'view',
-      }),
+    ...mapFields('user/del', {
+      deletedItem: 'deleted',
+      delIsLoading: 'isLoading'
+    }),
+    ...mapFields('user/list', {
+      error: 'error',
+      items: 'items',
+      isLoading: 'isLoading',
+      view: 'view',
+    }),
+    ...mapFields('user/create', {
+      createIsLoading: 'isLoading'
+    })
   },
-
-  mounted() {
-    this.getPage();
+  data() {
+    return {
+      currentlyDeletingItem: {
+        type: Object
+      },
+      showCreatedModal: false,
+      user: {
+        type: Object,
+      },
+      pressedCreatedButton: 0
+    }
   },
-
   methods: {
     ...mapActions({
       getPage: 'user/list/default',
+      create: 'user/create/create',
+      del: 'user/del/del'
     }),
+    createUser(role, pressedBtn) {
+      this.pressedCreatedButton = pressedBtn;
+      this.user = {
+        "username": generateRandomStr(8),
+        "password": generateRandomStr(16),
+        "roles": [ROLE[role] || ROLE.submitter]
+      };
+      this.create(this.user).then(() => {
+        this.toggleModal();
+        this.pressedCreatedButton = 0;
+        this.getPage();
+      });
+    },
+    deleteItem (item) {
+      this.currentlyDeletingItem = item;
+      if (window.confirm('Voulez-vous supprimer cet utilisateur?')) {
+        this.del(item).then(() => this.getPage() );
+      }
+    },
+    toggleModal(){
+      this.showCreatedModal = !this.showCreatedModal
+    },
+    chooseRoleClass(roles){
+      switch (roles[0]) {
+        case ROLE.submitter:
+          return "badge bg-info";
+        case ROLE.validator:
+          return "badge bg-success";
+        case ROLE.admin:
+          return "badge bg-warning";
+        default:
+          return "badge bg-dark";
+      }
+    }
+  },
+  mounted() {
+    this.getPage();
   },
 };
 </script>

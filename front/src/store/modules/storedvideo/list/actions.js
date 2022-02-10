@@ -1,10 +1,12 @@
 import fetch from "../../../../utils/fetch";
 import * as types from "./mutation_types";
 
-const getItems = ({ commit }, page = "stored_videos") => {
+const getItems = ({ commit }, {page, status} = {page: "stored_videos", status : 0}) => {
+  status = status || 0;
+  page = page || "stored_videos"
   commit(types.TOGGLE_LOADING);
 
-  fetch(page)
+  fetch(page, {params: { status }})
     .then((response) => response.json())
     .then((data) => {
       commit(types.TOGGLE_LOADING);

@@ -29,7 +29,7 @@
         <button type="button" class="btn btn-dark btn-lg btn-block" :class="{'disabled': !validatedFields}"
                 v-on:click="signIn()">
           <span v-if="this.isLoading">Connexion en cours...</span>
-          <span v-else>Connexion</span>
+          <span v-else>Se connecter</span>
         </button>
       </div>
     </form>
@@ -38,7 +38,7 @@
 <script>
 import {mapActions} from 'vuex';
 import {mapState} from 'vuex';
-import { getCurrentUserRole, ROLE} from '../../utils/utils.js';
+import {getCurrentUserRole, redirectOnHomepageByRole, ROLE} from '../../utils/utils.js';
 
 export default {
   name: "Login",
@@ -71,13 +71,7 @@ export default {
         username: this.input.username,
         password: this.input.password
       }).then(() => {
-        // Redirect the the default home page for the role
-        if(getCurrentUserRole(ROLE.admin)) {
-          this.$router.push('/users')
-        } else /*if(getCurrentUserRole(ROLE.AUTRE_ROLE))*/ {
-          // this.$router.push('/autre-url')
-
-        } /*repeat pour les autres rôles */
+        redirectOnHomepageByRole(this.$router);
       });
     }
   }
