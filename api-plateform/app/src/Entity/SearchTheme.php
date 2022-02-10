@@ -9,9 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: SearchThemeRepository::class)]
 #[ApiResource(
     collectionOperations: [
-        'post' => [
-            'denormalization_context' => ['groups' => ["write:SearchTheme"]],
-        ]
+        'post' => ['denormalization_context' => ['groups' => ["write:SearchTheme"]]]
     ],
     itemOperations: [
         'get' => [

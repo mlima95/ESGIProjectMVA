@@ -78,13 +78,13 @@ WSGI_APPLICATION = 'api.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-       'default': {
-           'ENGINE': 'djongo',
-           'NAME': 'yt_search',
-       }
-   }
-
+DATABASE = {
+    'default': {
+        'ENGINE': 'djongo',
+        'NAME': 'youtube-search',
+        'HOST': 'mongodb://mongodb:27017',
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators

@@ -8,6 +8,11 @@ services:
       - ~/mongo:/data/db
     ports:
       - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: youtube-search
+    networks:
+      - api-network
+      - py-local-mongo
   web:
     build:
       context: .
@@ -18,13 +23,13 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - mongodb
+    - mongodb
     networks:
       - api-network
-      - local-network
-
+      - py-local-mongo
 networks:
   api-network:
-    name: project_network
-  local-network:
+    external:
+      name: project_network
+  py-local-mongo:
     driver: bridge
