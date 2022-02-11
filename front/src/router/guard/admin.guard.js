@@ -1,8 +1,8 @@
-import {getCurrentUserRole, ROLE} from '../../utils/utils.js';
+import {isCurrentUserHaveRole, ROLE} from '../../utils/utils.js';
 
 export function adminGuard(to, from, next) {
 
-  if(getCurrentUserRole(ROLE.admin)){
+  if(isCurrentUserHaveRole(ROLE.admin)){
     next()
   }
 }
