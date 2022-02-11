@@ -21,15 +21,27 @@ use Symfony\Component\Serializer\Annotation\Groups;
             "security_message" => "You are not admin",
             'normalization_context' => ['groups' => ["read:User"]]
         ],
-        'post' => ['denormalization_context' => ['groups' => ["write:User"]]]
+        'post' => [
+            "security" => "is_granted('ROLE_ADMIN')",
+            "security_message" => "You are not admin",
+            'denormalization_context' => ['groups' => ["write:User"]],
+            'normalization_context' => ['groups' => ["read:User"]]
+
+        ]
     ],
     itemOperations: [
         'get' => [
             'controller' => NotFoundAction::class,
             'read' => false,
             'output' => false,
+            'openapi_context' => [
+                'summary' => 'hidden'
+            ]
         ],
-        'delete'
+        'delete' => [
+            "security" => "is_granted('ROLE_ADMIN')",
+            "security_message" => "You are not admin"
+        ]
     ]
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -53,7 +65,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 255)]
     private string $password;
 
-    #[Groups(["read:User"])]
+    #[Groups(["read:User", "write:User"])]
     #[ORM\Column(type: 'json')]
     private array $roles = [];
 
@@ -141,3 +153,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 }
+
+
+/**
+ * TODO Gérer le hash de Password avec un subscriber (apparament
+ * Tester la création et la suppression
+ * Soumettre le role de l'user à la création
+ * Développer (#prendre depuis le net ou générer) les vues de login et de "CRUD"
+ * Note : ne pas oublier de stocker le JWT
+ *
+ */

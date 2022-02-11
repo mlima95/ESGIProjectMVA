@@ -1,0 +1,22 @@
+version: '3'
+services:
+  vue-ui:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - '.:/app'
+      - '/app/node_modules'
+    env_file:
+      - ../.common-env
+    ports:
+      - '8080:8080'
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    networks:
+      - api-font
+
+networks:
+  api-font:
+    external:
+      name: api_front_network
