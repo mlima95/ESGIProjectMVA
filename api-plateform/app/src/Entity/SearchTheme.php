@@ -3,48 +3,57 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Action\NotFoundAction;
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\SearchThemeRepository;
-use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: SearchThemeRepository::class)]
+
 #[ApiResource(
     collectionOperations: [
-        'post' => ['denormalization_context' => ['groups' => ["write:SearchTheme"]]]
+        'post' => [
+            'denormalization_context' => ['groups' => ["write:SearchTheme"]],
+            'normalization_context' => ['groups' => ["read:SearchTheme"]]
+        ],
+        'get' => [
+            'controller' => NotFoundAction::class,
+            'read' => false,
+            'output' => false,
+            'openapi_context' => [
+                'summary' => 'hidden'
+            ]
+
+        ]
     ],
     itemOperations: [
         'get' => [
             'controller' => NotFoundAction::class,
             'read' => false,
             'output' => false,
+            'openapi_context' => [
+                'summary' => 'hidden'
+            ]
+
         ]
     ]
 
 )]
 class SearchTheme
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
     #[Groups(["read:SearchTheme"])]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(["read:SearchTheme"])]
+    #[Groups(["read:SearchTheme", "write:SearchTheme"])]
     private $keyword;
 
-    #[ORM\Column(type: 'integer')]
-    #[Groups(["read:SearchTheme"])]
+    #[Groups(["read:SearchTheme", "write:SearchTheme"])]
     private $statusId;
 
-    #[ORM\Column(type: 'integer')]
     #[Groups(["read:SearchTheme"])]
     private $youtubeLinkId;
 
-    #[ORM\OneToOne(targetEntity: User::class, cascade: ['persist', 'remove'])]
     #[Groups(["read:SearchTheme"])]
     private $authorId;
 
-    #[ORM\OneToOne(targetEntity: User::class, cascade: ['persist', 'remove'])]
     #[Groups(["read:SearchTheme"])]
     private $validatorId;
 
