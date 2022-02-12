@@ -1,5 +1,5 @@
 import * as types from "./mutation_types";
-import {setCurrentUser} from '../../../../utils/utils.js';
+import {getCurrentUser, removeCurrentUser, setCurrentUser} from '../../../../utils/utils.js';
 
 export default {
   [types.AUTH_LOGIN_SET_ERROR](state, error) {
@@ -20,6 +20,7 @@ export default {
   },
 
   [types.AUTH_LOGIN_RESET](state) {
+    removeCurrentUser()
     Object.assign(state, {
       user: null,
       error: "",
