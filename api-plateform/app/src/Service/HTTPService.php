@@ -65,10 +65,6 @@ class HTTPService {
             'body' => $requestJson,
         ]);
 
-        if (201 !== $response->getStatusCode()) {
-            throw new Exception('Error');
-        }
-
         $responseJson = $response->getContent();
 
         return json_decode($responseJson, true, 512, JSON_THROW_ON_ERROR);

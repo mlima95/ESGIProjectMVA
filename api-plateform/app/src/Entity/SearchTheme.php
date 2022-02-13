@@ -5,23 +5,19 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Action\NotFoundAction;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Action\ApiProperty;
 use App\Repository\SearchThemeRepository;
 
 
 #[ApiResource(
     collectionOperations: [
-        'post' => [
-            'denormalization_context' => ['groups' => ["write:SearchTheme"]],
-            'normalization_context' => ['groups' => ["read:SearchTheme"]]
-        ],
         'get' => [
-            'controller' => NotFoundAction::class,
-            'read' => false,
-            'output' => false,
-            'openapi_context' => [
-                'summary' => 'hidden'
-            ]
-
+            'normalization_context' => ['groups' => ["read:SearchTheme"]],
+            'denormalization_context' => ['groups' => ["write:SearchTheme", "write:getSearchTheme"]],
+        ],
+        'post' => [
+            'normalization_context' => ['groups' => ["read:SearchTheme"]],
+            'denormalization_context' => ['groups' => ["write:SearchTheme"]]
         ]
     ],
     itemOperations: [
@@ -32,7 +28,6 @@ use App\Repository\SearchThemeRepository;
             'openapi_context' => [
                 'summary' => 'hidden'
             ]
-
         ]
     ]
 
@@ -40,15 +35,17 @@ use App\Repository\SearchThemeRepository;
 class SearchTheme
 {
     #[Groups(["read:SearchTheme"])]
+    #[ApiProperty(identifier: false)]
     private $id;
 
     #[Groups(["read:SearchTheme", "write:SearchTheme"])]
+    #[ApiProperty(identifier: true)]
     private $keyword;
 
     #[Groups(["read:SearchTheme", "write:SearchTheme"])]
     private $statusId;
 
-    #[Groups(["read:SearchTheme"])]
+    #[Groups(["read:SearchTheme", "write:getSearchTheme"])]
     private $youtubeLinkId;
 
     #[Groups(["read:SearchTheme"])]
@@ -57,9 +54,16 @@ class SearchTheme
     #[Groups(["read:SearchTheme"])]
     private $validatorId;
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
+    }
+
+    public function setId(string $id): self
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getKeyword(): ?string

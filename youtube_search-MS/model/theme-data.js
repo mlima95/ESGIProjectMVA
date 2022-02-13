@@ -2,14 +2,9 @@ const mongoose = require('mongoose');
 const { v4: uuidv4} = require('uuid');
 
 const schema = new mongoose.Schema({
-    themeId: {
-        type: String,
-        required: true,
-        unique: true
-    },
     keyword: {
         type: String,
-        require: true
+        require: true,
     },
     statusId: {
         type: String,

@@ -1,6 +1,6 @@
 version: '3.8'
 services:
-  youtube_downloader:
+  youtube_search:
     depends_on:
       - mongodb
     build:

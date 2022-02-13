@@ -8,31 +8,32 @@ const {
 // Create and Save a new videoData
 exports.createKeyWord = async (req, res) => {
 
-    if (!req.body.keyword || !req.body.themeId) {
+    if (!req.body.keyword || !req.body.statusId) {
         res.status(400).send({ message: "Content can not be empty!" });
         return;
     }
 
     const videoData = new ThemeDataModel({
-        themeId: req.body.themeId,
+        statusId: req.body.statusId,
         keyword: req.body.keyword,
         authorId: req.body.authorId,
         validatorId: req.body.validatorId
     });
-    await videoData.save().then(() => res.send(200)).catch(err => {
+    await videoData.save().then((data) => {
+        res.status(200).json({id: data._id.toString(), statusId: data.statusId,
+            keyword: data.keyword})
+    }).catch(err => {
         res.status(500).send({
             message: err.message || "Some error occurred while creating videoData"
         });
     });
 
-    res.sendStatus(200);
-    res.end();
 };
 
 // Retrieve all videoData from the database.
 exports.findVideoId = async (req, res) => {
     try {
-        const themeData = await ThemeDataModel.findOne({ 'keyword': req.body.keyword });
+        const themeData = await ThemeDataModel.findOne({ 'keyword': req.query.keyword });
         const respond = themeData.keyword;
         
         const response = await fetch(BASE_URL + '&q=' + respond);
@@ -44,17 +45,11 @@ exports.findVideoId = async (req, res) => {
         }
 
         themeData.youtubeLinkId = array;
-        themeData.save().then(() => res.send(200)).catch(err => {
+        themeData.save().then(() => res.status(201).json(array)).catch(err => {
             res.status(500).send({
                 message: err.message || "Some error occurred while creating videoData"
             });
         })
-
-        res.status(200).json(themeData);
-
-        res.status(200).json(array);
-
-        //res.status(200).json(data.items);
 
     } catch(error) {
         res.status(404).json({message: error.message});

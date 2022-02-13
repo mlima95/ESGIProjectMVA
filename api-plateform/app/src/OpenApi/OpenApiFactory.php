@@ -30,6 +30,16 @@ class OpenApiFactory implements OpenApiFactoryInterface
         ));
         $openApi = $openApi->withInfo((new Model\Info('Status', 'v1', 'Status of Storedvideo'))->withExtensionProperty('info-key', 'Int status'));
 
+        $searchThemeGetColPath = $paths->getPath('/api/search_themes');
+        $searchVideoGetColOperation = $searchThemeGetColPath->getGet();
+        $openApi->getPaths()->addPath('/api/search_themes', $searchThemeGetColPath->withGet(
+            $searchVideoGetColOperation->withParameters(array_merge(
+                $searchVideoGetColOperation->getParameters(),
+                [new Model\Parameter('keyword', 'query', 'Keyword of SearchThemes', true)]
+            ))
+        ));
+        $openApi = $openApi->withInfo((new Model\Info('keyword', 'v1', 'Keyword of SearchThemes'))->withExtensionProperty('info-key', 'String keyword'));
+
         // Hide hidden item
         foreach ($openApi->getPaths()->getPaths() as $key => $path) {
             if ($path->getGet() && $path->getGet()->getSummary() === 'hidden') {
