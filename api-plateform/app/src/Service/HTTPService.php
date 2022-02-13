@@ -54,9 +54,7 @@ class HTTPService {
      * @throws TransportExceptionInterface
      */
     public function postOperation(string $url, mixed $data){
-
         $requestJson = json_encode($data, JSON_THROW_ON_ERROR);
-
         $response = $this->httpClient->request('POST', $url, [
             'headers' => [
                 'Content-Type: application/json',
@@ -65,9 +63,9 @@ class HTTPService {
             'body' => $requestJson,
         ]);
 
-        if (201 !== $response->getStatusCode()) {
-            throw new Exception('Error');
-        }
+//        if (201 !== $response->getStatusCode()) {
+//            throw new Exception('Error');
+//        }
 
         $responseJson = $response->getContent();
 

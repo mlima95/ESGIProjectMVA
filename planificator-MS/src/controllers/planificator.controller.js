@@ -3,21 +3,21 @@ const Planificators = db.planificators;
 
 
 exports.createPlanning = (req, res) => {
-
-    if(!req.body.youtubeSlug) {
+    if(!req.body.youtubeSlug && !req.body.dateOfUpload && !req.body.userId) {
         res.status(400).send({
             message: "Content can not be empty!"
         });
         return;
     }
 
-    const Planificator = {
+    const planificator = {
         youtubeSlug: req.body.youtubeSlug,
         status: req.body.status,
         dateOfUpload: req.body.dateOfUpload,
+        userId: req.body.userId
     };
 
-    Planificators.create(Planificator)
+    Planificators.create(planificator)
         .then(data => {
             res.send(data)
         })
