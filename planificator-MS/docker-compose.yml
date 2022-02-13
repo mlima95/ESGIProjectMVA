@@ -5,7 +5,7 @@ services:
     image: node:16-alpine3.11
     tty: true
     ports:
-      - "3000:3000"
+      - "3001:3001"
     env_file:
       - src/.env
     volumes:
@@ -14,6 +14,9 @@ services:
       - postgres
     working_dir: /home/node/app
     command: sh -c "npm install --no-update-notifier; npm start --no-update-notifier"
+    networks:
+      - api-network
+      - local-pg
 
   postgres:
     image: postgres:13.3-alpine
@@ -25,3 +28,13 @@ services:
       - "5433:5432"
     volumes:
       - ./db-data:/var/lib/postgresql/data:rw
+    networks:
+      - local-pg
+
+
+networks:
+  api-network:
+    external:
+      name: project_network
+  local-pg:
+    driver: bridge
