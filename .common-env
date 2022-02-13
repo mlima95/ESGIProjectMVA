@@ -8,3 +8,9 @@ API_URI_STORED_VIDEOS=stored_videos
 MS_YT_DOWNLOADER_BASE_URL=http://youtube_downloader:3000/
 MS_YT_DOWNLOADER_URI_STORED_VIDEOS_STATUS=video/status
 MS_YT_DOWNLOADER_URI_STORED_VIDEOS_QUEUE=video/add-queue
+
+##### Microservice youtube search #####
+
+MS_YT_SEARCH_BASE_URL=http://youtube_search:5001/
+MS_YT_SEARCH_URI_STORED_THEME=video/createKeyWord
+MS_YT_SEARCH_URI_FIND_THEME=video/findVideoId
