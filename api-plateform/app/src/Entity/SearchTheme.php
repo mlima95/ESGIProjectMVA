@@ -28,6 +28,10 @@ use App\Repository\SearchThemeRepository;
             'openapi_context' => [
                 'summary' => 'hidden'
             ]
+        ],
+        'patch' => [
+            'normalization_context' => ['groups' => ["read:SearchTheme"]],
+            'denormalization_context' => ['groups' => ["write:SearchTheme"]]
         ]
     ]
 
@@ -35,24 +39,23 @@ use App\Repository\SearchThemeRepository;
 class SearchTheme
 {
     #[Groups(["read:SearchTheme"])]
-    #[ApiProperty(identifier: false)]
-    private $id;
-
-    #[Groups(["read:SearchTheme", "write:SearchTheme"])]
     #[ApiProperty(identifier: true)]
-    private $keyword;
+    public $id;
 
     #[Groups(["read:SearchTheme", "write:SearchTheme"])]
-    private $statusId;
+    public $keyword;
+
+    #[Groups(["read:SearchTheme", "write:SearchTheme"])]
+    public $statusId;
 
     #[Groups(["read:SearchTheme", "write:getSearchTheme"])]
-    private $youtubeLinkId;
+    public $youtubeLinkId;
 
-    #[Groups(["read:SearchTheme"])]
-    private $authorId;
+    #[Groups(["read:SearchTheme", "write:getSearchTheme", "write:SearchTheme"])]
+    public $authorId;
 
-    #[Groups(["read:SearchTheme"])]
-    private $validatorId;
+    #[Groups(["read:SearchTheme", "write:getSearchTheme", "write:SearchTheme"])]
+    public $validatorId;
 
     public function getId(): ?string
     {
@@ -78,12 +81,12 @@ class SearchTheme
         return $this;
     }
 
-    public function getStatusId(): ?int
+    public function getStatusId(): ?string
     {
         return $this->statusId;
     }
 
-    public function setStatusId(int $statusId): self
+    public function setStatusId(string $statusId): self
     {
         $this->statusId = $statusId;
 
@@ -102,24 +105,24 @@ class SearchTheme
         return $this;
     }
 
-    public function getAuthorId(): ?User
+    public function getAuthorId(): ?string
     {
         return $this->authorId;
     }
 
-    public function setAuthorId(?User $authorId): self
+    public function setAuthorId(?string $authorId): self
     {
         $this->authorId = $authorId;
 
         return $this;
     }
 
-    public function getValidatorId(): ?User
+    public function getValidatorId(): ?string
     {
         return $this->validatorId;
     }
 
-    public function setValidatorId(?User $validatorId): self
+    public function setValidatorId(?string $validatorId): self
     {
         $this->validatorId = $validatorId;
 

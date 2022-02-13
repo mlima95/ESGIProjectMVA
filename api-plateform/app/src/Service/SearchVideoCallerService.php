@@ -11,7 +11,8 @@ use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
-class SearchVideoCallerService {
+class SearchVideoCallerService
+{
 
     private HTTPService $httpService;
 
@@ -31,9 +32,23 @@ class SearchVideoCallerService {
      */
     public function createSearchVideo(array $searchTheme): mixed
     {
-        //dd($searchTheme);
         return $this->httpService->postOperation($this->url . getenv(CONSTANT::MS_YT_SEARCH_URI_STORED_THEME), $searchTheme);
     }
+
+    /**
+     * @param []
+     * @return mixed
+     * @throws JsonException
+     * @throws TransportExceptionInterface
+     */
+    public function updateSearchVideo(array $searchTheme): mixed
+    {
+        return $this->httpService->patch(
+            $this->url . getenv(CONSTANT::MS_YT_SEARCH_URI_STORED_THEME_UPDATE),
+            $searchTheme['id'],
+            $searchTheme);
+    }
+
 
     /**
      * @throws TransportExceptionInterface
@@ -43,7 +58,8 @@ class SearchVideoCallerService {
      * @throws ClientExceptionInterface
      * @throws JsonException
      */
-    public function getSearchVideoBykeyword($keyword) {
+    public function getSearchVideoBykeyword($keyword)
+    {
         return $this->httpService->get($this->url . getenv(CONSTANT::MS_YT_SEARCH_URI_FIND_THEME), [
             'keyword' => $keyword
         ]);

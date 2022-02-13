@@ -13,14 +13,14 @@ exports.create = async (req, res) => {
             videoId: vid.videoId,
             dateOfUpload: vid.dateOfUpload
         });
-        await videoData.save().catch(err => {
+        videoData.save().then((data) => res.status(201).json(data)).catch(err => {
             res.status(500).send({
                 message: err.message || "Some error occurred while creating videoData"
             });
         });
     }
 
-    res.sendStatus(200);
+
 
 
 

@@ -75,16 +75,13 @@ class HTTPService {
 
     /**
      * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ClientExceptionInterface
      * @throws JsonException
      */
-    public function putItem(string $url, string $id, mixed $data){
+    public function patch(string $url, string $id, mixed $data){
 
         $requestJson = json_encode($data, JSON_THROW_ON_ERROR);
 
-        $response = $this->httpClient->request('PUT', $url . '/' .$id, [
+        $response = $this->httpClient->request('PATCH', $url . '/' .$id, [
             'headers' => [
                 'Content-Type: application/json',
                 'Accept: application/json',

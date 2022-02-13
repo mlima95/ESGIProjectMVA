@@ -16,12 +16,12 @@ const schema = new mongoose.Schema({
         default: ''
     },
     authorId: {
-        type: Number,
+        type: String,
         required: true,
         default: 0
     },
     validatorId: {
-        type: Number,
+        type: String,
         required: true,
         default: 0
     }

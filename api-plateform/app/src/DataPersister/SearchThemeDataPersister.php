@@ -24,21 +24,35 @@ final class SearchThemeDataPersister implements ContextAwareDataPersisterInterfa
 
     /**
      * @throws TransportExceptionInterface
-     * @throws JsonException
+     * @throws \JsonException
      */
-    public function persist($data, array $context = [])
+    public function persist($data, array $context = []): SearchTheme
     {
+
+        dd($context);
         $data2 = [
             'keyword' => $data->getKeyword(),
             'statusId' => $data->getStatusId(),
+            'authorId' => $data->getAuthorId()
         ];
-        // call your persistence layer to save $data
-        $result = $this->service->createSearchVideo($data2);
+
+        if ($context['collection_operation_name'] === "patch") {
+            $data2["validatorId"] = $data->getValidatorId();
+            $data2["id"] = $data->getId();
+            $result = $this->service->updateSearchVideo($data2);
+        } else {
+            $result = $this->service->createSearchVideo($data2);
+        }
+
 
         $newSearchTheme = new SearchTheme();
         $newSearchTheme->setId($result['id']);
-        $newSearchTheme->setKeyword($data->getKeyword());
-        $newSearchTheme->setStatusId($data->getStatusId());
+        $newSearchTheme->setKeyword($result['keyword']);
+        $newSearchTheme->setStatusId($result["statusId"]);
+
+        if ($context['collection_operation_name'] === "patch") {
+            $newSearchTheme->setValidatorId($result["validatorId"]);
+        }
 
         return $newSearchTheme;
     }
