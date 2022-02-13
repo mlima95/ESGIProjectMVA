@@ -20,6 +20,7 @@ final class AuthenticationSuccessListener {
         }
 
         $data['roles'] = $user->getRoles();
+        $data['uuid'] = $user->getUuid();
 
 
         $event->setData($data);
