@@ -20,16 +20,17 @@ class OpenApiFactory implements OpenApiFactoryInterface
         $paths = $openApi->getPaths();
         /****************** StoredVideo ********************/
         // Add Get collection
-        $storedVideoGetColPath = $paths->getPath('/api/stored_videos');
-        $storedVideoGetColOperation = $storedVideoGetColPath->getGet();
-        $openApi->getPaths()->addPath('/api/stored_videos', $storedVideoGetColPath->withGet(
-            $storedVideoGetColOperation->withParameters(array_merge(
-                $storedVideoGetColOperation->getParameters(),
+        $planificatorGetColPath = $paths->getPath('/api/stored_videos');
+        $planificatorGetColOperation = $planificatorGetColPath->getGet();
+        $openApi->getPaths()->addPath('/api/stored_videos', $planificatorGetColPath->withGet(
+            $planificatorGetColOperation->withParameters(array_merge(
+                $planificatorGetColOperation->getParameters(),
                 [new Model\Parameter('status', 'query', 'Status of Storedvideo', true)]
             ))
         ));
         $openApi = $openApi->withInfo((new Model\Info('Status', 'v1', 'Status of Storedvideo'))->withExtensionProperty('info-key', 'Int status'));
 
+        /****************** Search_themes ********************/
         $searchThemeGetColPath = $paths->getPath('/api/search_themes');
         $searchVideoGetColOperation = $searchThemeGetColPath->getGet();
         $openApi->getPaths()->addPath('/api/search_themes', $searchThemeGetColPath->withGet(
@@ -39,6 +40,10 @@ class OpenApiFactory implements OpenApiFactoryInterface
             ))
         ));
         $openApi = $openApi->withInfo((new Model\Info('keyword', 'v1', 'Keyword of SearchThemes'))->withExtensionProperty('info-key', 'String keyword'));
+
+
+//        $openApi = $openApi->withInfo((new Model\Info('planificator', 'v1', 'Planning'))->withExtensionProperty('info-key', 'Int status'));
+
 
         // Hide hidden item
         foreach ($openApi->getPaths()->getPaths() as $key => $path) {

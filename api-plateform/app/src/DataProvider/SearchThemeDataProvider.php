@@ -34,8 +34,12 @@ final class SearchThemeDataProvider implements ContextAwareCollectionDataProvide
      */
     public function getCollection(string $resourceClass, string $operationName = null, array $context = [])
     {
-        
-       return $this->service->getSearchVideoBykeyword($context["filters"]["keyword"]);
+        if(isset($context["filters"]["keyword"])){
+            return $this->service->getSearchVideoBykeyword($context["filters"]["keyword"]);
+        }else{
+            return $this->service->getKeywords();
+        }
+
     }
 
     public function supports(string $resourceClass, string $operationName = null, array $context = []): bool

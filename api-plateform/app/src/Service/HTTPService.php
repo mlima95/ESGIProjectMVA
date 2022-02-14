@@ -11,7 +11,8 @@ use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class HTTPService {
+class HTTPService
+{
 
 
     private HttpClientInterface $httpClient;
@@ -30,10 +31,11 @@ class HTTPService {
      * @throws ClientExceptionInterface
      * @throws JsonException
      */
-    public function get(string $url, mixed $data = null) {
+    public function get(string $url, mixed $data = null)
+    {
 
         $urlParamed = $url;
-        if(!is_null($data)){
+        if (!is_null($data)) {
             $urlParamed = $this->paramURL($url, $data);
         }
 
@@ -53,7 +55,8 @@ class HTTPService {
      * @throws JsonException
      * @throws TransportExceptionInterface
      */
-    public function postOperation(string $url, mixed $data){
+    public function postOperation(string $url, mixed $data)
+    {
         $requestJson = json_encode($data, JSON_THROW_ON_ERROR);
         $response = $this->httpClient->request('POST', $url, [
             'headers' => [
@@ -80,11 +83,12 @@ class HTTPService {
      * @throws ClientExceptionInterface
      * @throws JsonException
      */
-    public function putItem(string $url, string $id, mixed $data){
+    public function patchItem(string $url, string $id, mixed $data)
+    {
 
         $requestJson = json_encode($data, JSON_THROW_ON_ERROR);
 
-        $response = $this->httpClient->request('PUT', $url . '/' .$id, [
+        $response = $this->httpClient->request('PATCH', $url . '/' . $id, [
             'headers' => [
                 'Content-Type: application/json',
                 'Accept: application/json',
@@ -92,11 +96,11 @@ class HTTPService {
             'body' => $requestJson,
         ]);
 
-        if (201 !== $response->getStatusCode()) {
+        if (204 !== $response->getStatusCode()) {
             throw new Exception('Error');
         }
 
-        $responseJson = $response->getContent();
+        $responseJson = json_encode(['status' => $response->getStatusCode()]);
 
         return json_decode($responseJson, true, 512, JSON_THROW_ON_ERROR);
 
@@ -105,8 +109,8 @@ class HTTPService {
     private function paramURL(string $url, mixed $data): string
     {
         $urlParamed = $url . '?';
-        foreach ( $data as $key => $value) {
-          $urlParamed .= $key . '=' . $value . '&';
+        foreach ($data as $key => $value) {
+            $urlParamed .= $key . '=' . $value . '&';
         }
         return $urlParamed;
     }

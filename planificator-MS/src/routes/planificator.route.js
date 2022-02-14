@@ -4,6 +4,7 @@ module.exports = app => {
     var router = require("express").Router();
 
     router.post("/", planificators.createPlanning);
+    router.patch("/:youtubeSlug", planificators.updatePlanificatorByStatus);
     router.get("/", planificators.findAllPlannings);
 
     app.use('/planning', router);

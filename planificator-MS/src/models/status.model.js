@@ -7,7 +7,7 @@ module.exports = (sequelize, Datatypes) => {
         status: Datatypes.STRING,
     }, {
         sequelize,
-        modelName: 'status',
+        modelName: 'statu',
     });
 
     return Status;
