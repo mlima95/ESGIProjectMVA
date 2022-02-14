@@ -7,8 +7,8 @@ const {
 
 // Create and Save a new videoData
 exports.createKeyWord = async (req, res) => {
-
-    if (!req.body.keyword || !req.body.statusId) {
+    console.log(req.body);
+    if (!req.body.keyword || !req.body.statusId || !req.body.authorId) {
         res.status(400).send({ message: "Content can not be empty!" });
         return;
     }
@@ -20,7 +20,7 @@ exports.createKeyWord = async (req, res) => {
         validatorId: req.body.validatorId
     });
     await videoData.save().then((data) => {
-        res.status(200).json({id: data._id.toString(), statusId: data.statusId,
+        res.status(201).json({id: data._id.toString(), statusId: data.statusId,
             keyword: data.keyword})
     }).catch(err => {
         res.status(500).send({
@@ -29,6 +29,26 @@ exports.createKeyWord = async (req, res) => {
     });
 
 };
+
+exports.findAllKeywords = async (req, res) => {
+    try {
+        const themeData = await ThemeDataModel.find();
+        res.status(200).json(themeData);
+    } catch(error) {
+        res.status(404).json({message: error.message});
+    }
+};
+
+exports.findAllDownloaded = async (req, res) => {
+    try {
+        const themeData = await ThemeDataModel.find();
+        res.status(200).json(themeData);
+    } catch(error) {
+        res.status(404).json({message: error.message});
+    }
+
+};
+
 
 // Retrieve all videoData from the database.
 exports.findVideoId = async (req, res) => {

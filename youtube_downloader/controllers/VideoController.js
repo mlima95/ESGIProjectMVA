@@ -4,25 +4,27 @@ const VideoDataModel = require('../model/video-data')
 exports.create = async (req, res) => {
 
     if (!req.body.length || !req.body[0].videoId && !req.body[0].dateOfUpload) {
-        res.status(400).send({ message: "Content can not be empty!" });
+        res.status(400).send({message: "Content can not be empty!"});
         return;
     }
-
-    for(const vid of req.body){
+    let isError = false;
+    for (const vid of req.body) {
         const videoData = new VideoDataModel({
             videoId: vid.videoId,
             dateOfUpload: vid.dateOfUpload
         });
         await videoData.save().catch(err => {
-            res.status(500).send({
-                message: err.message || "Some error occurred while creating videoData"
-            });
+            isError = true;
         });
     }
 
-    res.sendStatus(200);
-
-
+    if(isError){
+        res.status(500).send({
+            message: "Some error occurred while creating videoData"
+        });
+    }else{
+        res.status(201).json({status: '201'});
+    }
 
 };
 
@@ -31,13 +33,13 @@ exports.findAllByStatus = async (req, res) => {
     try {
         console.log(req.query)
         if (!req.query.status) {
-            res.status(400).send({ message: "Missing params Status" });
+            res.status(400).send({message: "Missing params Status"});
             return;
         }
-        const videoData = await VideoDataModel.find({ 'status': req.query.status });
+        const videoData = await VideoDataModel.find({'status': req.query.status});
         const respond = [];
         // Prepare to data to be send
-        for(const vid of videoData){
+        for (const vid of videoData) {
             respond.push({
                 videoId: vid.videoId,
                 dateOfUpload: vid.dateOfUpload,
@@ -46,7 +48,7 @@ exports.findAllByStatus = async (req, res) => {
         }
         res.status(200).json(respond);
 
-    } catch(error) {
+    } catch (error) {
         res.status(404).json({message: error.message});
     }
 };

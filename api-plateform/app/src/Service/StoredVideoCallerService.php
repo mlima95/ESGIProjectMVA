@@ -20,7 +20,7 @@ class StoredVideoCallerService {
     public function __construct(HTTPService $httpService)
     {
         $this->httpService = $httpService;
-        $this->url = getenv(CONSTANT::MS_YT_DOWNLOADER_BASE_URL) . getenv(CONSTANT::MS_YT_DOWNLOADER_URI_STORED_VIDEOS_STATUS);
+        $this->url = getenv(CONSTANT::MS_YT_DOWNLOADER_BASE_URL) ;
     }
 
     /**
@@ -31,7 +31,7 @@ class StoredVideoCallerService {
      */
     public function createStoredVideo(array $stoVids): mixed
     {
-        return $this->httpService->postOperation($this->url, $stoVids);
+        return $this->httpService->postOperation($this->url . getenv(CONSTANT::MS_YT_DOWNLOADER_URI_STORED_VIDEOS_QUEUE), $stoVids);
     }
 
     /**
@@ -43,7 +43,7 @@ class StoredVideoCallerService {
      * @throws JsonException
      */
     public function getStoredVideByStatus($status) {
-        return $this->httpService->get($this->url, [
+        return $this->httpService->get($this->url . getenv(CONSTANT::MS_YT_DOWNLOADER_URI_STORED_VIDEOS_STATUS), [
             'status' => $status
         ]);
     }

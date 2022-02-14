@@ -14,12 +14,13 @@ exports.createPlanning = (req, res) => {
         youtubeSlug: req.body.youtubeSlug,
         status: req.body.status,
         dateOfUpload: req.body.dateOfUpload,
-        userId: req.body.userId
+        userId: req.body.userId,
+        statusId: "3"
     };
 
     Planificators.create(planificator)
         .then(data => {
-            res.send(data)
+            res.status(201).json(data)
         })
         .catch(err => {
             res.status(500).send({
@@ -29,11 +30,34 @@ exports.createPlanning = (req, res) => {
         });
 };
 
+exports.updatePlanificatorByStatus = (req, res) => {
+    if(!req.body) {
+        res.status(400).send({
+            message: "Content can not be empty!"
+        });
+        return;
+    }
+    const youtubeSlug = req.body.youtubeSlug;
+
+    Planificators.update(req.body,{
+        where: {youtubeSlug: youtubeSlug}, attributes:["statusId"]
+    })
+        .then(data => {
+            res.sendStatus(204);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message || 'Some error occurred while updating planning.'
+            });
+        })
+};
+
 exports.findAllPlannings = (req, res) => {
 
     Planificators.findAll({
         attributes: [
-            'youtubeSlug', 'status', 'dateOfUpload', 'userId'
+            'youtubeSlug', 'dateOfUpload', 'userId', 'statusId'
         ]
     }).then(data => {
         res.set('Access-Control-Expose-Headers', 'X-Total-Count')

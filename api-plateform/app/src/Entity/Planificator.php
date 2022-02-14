@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Action\NotFoundAction;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Controller\PlanificatorController;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints\DateTime;
 
@@ -20,6 +21,15 @@ use Symfony\Component\Validator\Constraints\DateTime;
             "security_message" => "You are not admin",
             'normalization_context' => ['groups' => ["read:Planificator"]],
             'denormalization_context' => ['groups' => ["write:Planificator"]]
+        ],
+        'post_validation' => [
+            'method' => "POST",
+            'controller' => PlanificatorController::class,
+            "path" => "planificators/validation-download",
+            "security" => "is_granted('ROLE_ADMIN') || is_granted('ROLE_VALIDATOR')",
+            "security_message" => "You are not admin",
+            'normalization_context' => ['groups' => ["read:Planificator"]],
+            'denormalization_context' => ['groups' => ["write:Planificator"]]
         ]
     ],
     itemOperations: [
@@ -30,7 +40,14 @@ use Symfony\Component\Validator\Constraints\DateTime;
             'openapi_context' => [
                 'summary' => 'hidden'
             ]
-
+        ],
+        'patch_planning' => [
+            'method' => 'PATCH',
+            'controller' => PlanificatorController::class,
+            "security" => "is_granted('ROLE_ADMIN') || is_granted('ROLE_VALIDATOR')",
+            "security_message" => "You are not admin",
+            'normalization_context' => ['groups' => ["read:Planificator"]],
+            'denormalization_context' => ['groups' => ["write:Planificator"]]
         ]
     ]
 )]
@@ -43,7 +60,7 @@ class Planificator
     public string $youtubeSlug;
 
     #[Groups(["read:Planificator", "write:Planificator"])]
-    public string $status;
+    public string $statusId;
 
     #[Groups(["read:Planificator", "write:Planificator"])]
     public $dateOfUpload;
@@ -70,17 +87,17 @@ class Planificator
     /**
      * @return string
      */
-    public function getStatus(): string
+    public function getStatusId(): string
     {
-        return $this->status;
+        return $this->statusId;
     }
 
     /**
-     * @param string $status
+     * @param string $statusId
      */
-    public function setStatus(string $status): void
+    public function setStatus(string $statusId): void
     {
-        $this->status = $status;
+        $this->statusId = $statusId;
     }
 
     /**

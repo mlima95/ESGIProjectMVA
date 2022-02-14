@@ -30,7 +30,7 @@ final class PlanificatorDataPersister implements ContextAwareDataPersisterInterf
     public function persist($data, array $context = [])
     {
         // call your persistence layer to save $data
-            return $this->service->createPlanning($data);
+        return $this->service->createPlanning($data);
     }
 
     public function remove($data, array $context = [])

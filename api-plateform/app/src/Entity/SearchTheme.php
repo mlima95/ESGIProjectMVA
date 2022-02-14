@@ -15,6 +15,14 @@ use App\Repository\SearchThemeRepository;
             'normalization_context' => ['groups' => ["read:SearchTheme"]],
             'denormalization_context' => ['groups' => ["write:SearchTheme", "write:getSearchTheme"]],
         ],
+        'get_search_themes' => [
+            'method' => 'GET',
+            'path' => 'search_themes/all',
+            "security" => "is_granted('ROLE_ADMIN') || is_granted('ROLE_VALIDATOR')",
+            "security_message" => "You are not admin",
+            'normalization_context' => ['groups' => ["read:SearchTheme"]],
+            'denormalization_context' => ['groups' => ["write:SearchTheme"]]
+        ],
         'post' => [
             'normalization_context' => ['groups' => ["read:SearchTheme"]],
             'denormalization_context' => ['groups' => ["write:SearchTheme"]]

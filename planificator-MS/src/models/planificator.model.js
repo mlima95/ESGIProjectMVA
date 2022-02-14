@@ -5,7 +5,6 @@ module.exports = (sequelize, Datatypes) => {
 
     Planificator.init({
         youtubeSlug: Datatypes.STRING,
-        status: Datatypes.STRING,
         dateOfUpload: Datatypes.DATE,
         userId: Datatypes.UUID,
     }, {

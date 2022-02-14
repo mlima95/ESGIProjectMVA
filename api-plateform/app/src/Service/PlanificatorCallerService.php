@@ -35,6 +35,29 @@ class PlanificatorCallerService {
         return $this->httpService->postOperation($this->url, $planning);
     }
 
+
+    /**
+     * @param Planificator
+     * @return mixed
+     * @throws JsonException
+     * @throws TransportExceptionInterface
+     */
+    public function updateStatusByVideo(string $youtubeSlug): mixed
+    {
+        return $this->httpService->patchItem($this->url, $youtubeSlug);
+    }
+
+    /**
+     * @param Planificator
+     * @return mixed
+     * @throws JsonException
+     * @throws TransportExceptionInterface
+     */
+    public function updatePlanificator(Planificator $planificator): mixed
+    {
+        return $this->httpService->patchItem($this->url, $planificator->getYoutubeSlug(), $planificator);
+    }
+
     /**
      * @throws TransportExceptionInterface
      * @throws ServerExceptionInterface

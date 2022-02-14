@@ -18,3 +18,4 @@ MS_PLANIFICATOR_URI=planning/
 MS_YT_SEARCH_BASE_URL=http://youtube_search:5001/
 MS_YT_SEARCH_URI_STORED_THEME=video/createKeyWord
 MS_YT_SEARCH_URI_FIND_THEME=video/findVideoId
+MS_YT_SEARCH_URI_KEYWORDS=video/findAllKeywords

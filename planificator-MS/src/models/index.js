@@ -16,5 +16,11 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.planificators = require("../models/planificator.model.js")(sequelize, Sequelize)
+db.status = require("../models/status.model")(sequelize, Sequelize)
+
+db.status.hasMany(db.planificators,{
+    foreignKey: "statusId",
+    as: "planificators"
+})
 
 module.exports = db;

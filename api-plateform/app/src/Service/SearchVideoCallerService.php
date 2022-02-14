@@ -49,4 +49,17 @@ class SearchVideoCallerService {
         ]);
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     * @throws JsonException
+     */
+    public function getKeywords() {
+//        dd($this->url . getenv(CONSTANT::MS_YT_SEARCH_URI_FIND_THEME));
+        return $this->httpService->get($this->url . getenv(CONSTANT::MS_YT_SEARCH_URI_KEYWORDS));
+    }
+
 }
