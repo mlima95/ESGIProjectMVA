@@ -30,7 +30,6 @@ final class SearchThemeDataPersister implements ContextAwareDataPersisterInterfa
     {
         $data2 = [
             'keyword' => $data->getKeyword(),
-            'statusId' => $data->getStatusId(),
         ];
         // call your persistence layer to save $data
         $result = $this->service->createSearchVideo($data2);
@@ -38,7 +37,6 @@ final class SearchThemeDataPersister implements ContextAwareDataPersisterInterfa
         $newSearchTheme = new SearchTheme();
         $newSearchTheme->setId($result['id']);
         $newSearchTheme->setKeyword($data->getKeyword());
-        $newSearchTheme->setStatusId($data->getStatusId());
 
         return $newSearchTheme;
     }

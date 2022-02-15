@@ -12,18 +12,20 @@ use App\Repository\SearchThemeRepository;
 #[ApiResource(
     collectionOperations: [
         'get' => [
+            "security" => "is_granted('ROLE_VALIDATOR')",
             'normalization_context' => ['groups' => ["read:SearchTheme"]],
             'denormalization_context' => ['groups' => ["write:SearchTheme", "write:getSearchTheme"]],
         ],
         'get_search_themes' => [
             'method' => 'GET',
             'path' => 'search_themes/all',
-            "security" => "is_granted('ROLE_ADMIN') || is_granted('ROLE_VALIDATOR')",
+            "security" => "is_granted('ROLE_VALIDATOR')",
             "security_message" => "You are not admin",
             'normalization_context' => ['groups' => ["read:SearchTheme"]],
             'denormalization_context' => ['groups' => ["write:SearchTheme"]]
         ],
         'post' => [
+            "security" => "is_granted('ROLE_SUBMITTER')",
             'normalization_context' => ['groups' => ["read:SearchTheme"]],
             'denormalization_context' => ['groups' => ["write:SearchTheme"]]
         ]
@@ -49,9 +51,6 @@ class SearchTheme
     #[Groups(["read:SearchTheme", "write:SearchTheme"])]
     #[ApiProperty(identifier: true)]
     private $keyword;
-
-    #[Groups(["read:SearchTheme", "write:SearchTheme"])]
-    private $statusId;
 
     #[Groups(["read:SearchTheme", "write:getSearchTheme"])]
     private $youtubeLinkId;
@@ -82,18 +81,6 @@ class SearchTheme
     public function setKeyword(string $keyword): self
     {
         $this->keyword = $keyword;
-
-        return $this;
-    }
-
-    public function getStatusId(): ?int
-    {
-        return $this->statusId;
-    }
-
-    public function setStatusId(int $statusId): self
-    {
-        $this->statusId = $statusId;
 
         return $this;
     }
