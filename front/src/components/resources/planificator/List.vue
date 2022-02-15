@@ -8,21 +8,12 @@
       class="alert alert-info">Loading...
     </div>
     <div
-      v-if="deletedItem"
-      class="alert alert-success">{{ deletedItem['@id'] }} deleted.
-    </div>
-    <div
       v-if="error"
       class="alert alert-danger">{{ error }}
     </div>
 
-    <p>
-      <!--      <router-link-->
-      <!--        :to="{ name: 'PlanificatorCreate' }"-->
-      <!--        class="btn btn-primary">Create</router-link>-->
-    </p>
     <div
-      v-for="item in items"
+      v-for="item in getItemsList()"
       :key="item['@id']">
       <Card :itemCard="item"></Card>
     </div>
@@ -43,21 +34,23 @@ export default {
     }
   },
   computed: {
-    ...mapFields('planificator/del', {
-      deletedItem: 'deleted',
-    }),
     ...mapFields('planificator/list', {
       error: 'error',
       isLoading: 'isLoading',
       view: 'view',
-    }),
+    })
   },
   components: {
     Card
   },
+  methods: {
+    getItemsList(){
+      return this.items;
+    }
+  },
   created(){
-    this.items = JSON.parse(localStorage.getItem("listVideo"));
-    console.log("dfsdgdf",this.items)
+    // this.items = JSON.parse(localStorage.getItem("listVideo"));
+    // console.log("dfsdgdf",this.items)
   }
 };
 </script>

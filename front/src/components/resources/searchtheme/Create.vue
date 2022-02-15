@@ -69,7 +69,7 @@ export default {
         return;
       }
 
-      this.$router.push({name: 'SearchThemeUpdate', params: {id: created['@id']}});
+      this.$router.go();
     }
   },
 
