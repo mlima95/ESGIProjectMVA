@@ -26,7 +26,6 @@ class PlanificatorController extends AbstractController
     {
         //Update ms planification
         // if -> data -> valid -> data de download [VideoId, dataId
-//        dd($data);
         $this->planificatorCallerService->updatePlanificator($data);
         $this->storedVideoCallerService->createStoredVideo([["videoId" => $data->getYoutubeSlug(),
                                                             "dateOfUpload" => $data->getDateOfUpload()]]);

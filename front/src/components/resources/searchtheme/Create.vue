@@ -1,39 +1,46 @@
 <template>
-  <div>
-    <h1>New SearchTheme</h1>
+  <div class="vertical-center">
+    <div class="inner-block">
+      <div>
+        <h1>New SearchTheme</h1>
 
-    <div
-      v-if="isLoading"
-      class="alert alert-info"
-      role="status">Loading...</div>
-    <div
-      v-if="error"
-      class="alert alert-danger"
-      role="alert">
+        <div
+          v-if="isLoading"
+          class="alert alert-info"
+          role="status">Loading...
+        </div>
+        <div
+          v-if="error"
+          class="alert alert-danger"
+          role="alert">
       <span
         class="fa fa-exclamation-triangle"
         aria-hidden="true">{{ error }}</span>
+        </div>
+
+        <SearchThemeForm
+          :handle-submit="onSendForm"
+          :values="item"
+          :errors="violations"/>
+
+        <router-link
+          :to="{ name: 'SearchThemeList' }"
+          class="btn btn-default">Back to list
+        </router-link>
+      </div>
     </div>
-
-    <SearchThemeForm
-      :handle-submit="onSendForm"
-      :values="item"
-      :errors="violations" />
-
-    <router-link
-      :to="{ name: 'SearchThemeList' }"
-      class="btn btn-default">Back to list</router-link>
   </div>
+
 </template>
 
 <script>
-import { createHelpers } from 'vuex-map-fields';
-import { mapActions } from 'vuex';
+import {createHelpers} from 'vuex-map-fields';
+import {mapActions} from 'vuex';
 import SearchThemeForm from './Form';
 
-const { mapFields } = createHelpers({
-    getterType: 'searchtheme/create/getField',
-    mutationType: 'searchtheme/create/updateField',
+const {mapFields} = createHelpers({
+  getterType: 'searchtheme/create/getField',
+  mutationType: 'searchtheme/create/updateField',
 });
 
 export default {
@@ -41,7 +48,7 @@ export default {
     SearchThemeForm,
   },
 
-  data () {
+  data() {
     return {
       item: {},
     };
@@ -58,12 +65,12 @@ export default {
 
   watch: {
     // eslint-disable-next-line object-shorthand,func-names
-    created: function(created) {
+    created: function (created) {
       if (!created) {
         return;
       }
 
-      this.$router.push({ name: 'SearchThemeUpdate', params: { id: created['@id'] } });
+      this.$router.push({name: 'SearchThemeUpdate', params: {id: created['@id']}});
     }
   },
 
@@ -72,7 +79,7 @@ export default {
       'create',
     ]),
 
-    onSendForm () {
+    onSendForm() {
       this.create(this.item);
     },
   },

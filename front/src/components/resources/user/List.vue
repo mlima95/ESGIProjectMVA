@@ -1,75 +1,87 @@
 <template>
-  <div>
-    <h1>Liste des utilisateurs</h1>
-    <div
-      v-if="isLoading"
-      class="alert alert-info">Chargement en cours...
-    </div>
-    <div
-      v-if="deletedItem"
-      class="alert alert-success">L'utilisateur {{ deletedItem['username'] }} a été supprimé.
-    </div>
-    <div
-      v-if="error"
-      class="alert alert-danger">Erreur : {{ error }}
-    </div>
+  <div class="vertical-center">
+    <div class="inner-block">
+      <div>
+        <h1>Liste des utilisateurs</h1>
+        <div
+          v-if="isLoading"
+          class="alert alert-info">Chargement en cours...
+        </div>
+        <div
+          v-if="deletedItem"
+          class="alert alert-success">L'utilisateur {{ deletedItem['username'] }} a été supprimé.
+        </div>
+        <div
+          v-if="error"
+          class="alert alert-danger">Erreur : {{ error }}
+        </div>
 
-    <div class="bg-light clearfix">
-      <button
-        @click="createUser('submitter',1)"
-        class="btn btn-info mr1"><i v-if="createIsLoading && pressedCreatedButton === 1" class="fa fa-circle-o-notch fa-spin" style="font-size:24px"></i>Générer un Submitter
-      </button>
-      <button
-        @click="createUser('validator', 2)"
-        class="btn btn-success mr1"><i v-if="createIsLoading && pressedCreatedButton === 2" class="fa fa-circle-o-notch fa-spin" style="font-size:24px"></i>Générer un Validator
-      </button>
-      <button
-        @click="createUser('admin', 3)"
-        class="btn btn-warning mr1"><i v-if="createIsLoading && pressedCreatedButton === 3" class="fa fa-circle-o-notch fa-spin" style="font-size:24px"></i>Générer un Admin
-      </button>
-    </div>
-      <Modal
-        v-show="showCreatedModal"
-        @close="toggleModal()"
-      >
-        <template v-slot:header>
-          Utilisateur créé !
-        </template>
-        <template v-slot:body v-bind:user="user">
-          Voici les credentials pour cet utilisateur : {{ user.username + ':' + user.password }}
-        </template>
-      </Modal>
-    <table class="table table-responsive table-striped table-hover">
-      <thead>
-      <tr>
-        <th>UUID</th>
-        <th>Username</th>
-        <th>Roles</th>
-        <th colspan="2"></th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr
-        v-for="item in items"
-        :key="item['@id']">
-        <td>
-          {{ item['uuid'] }}
-        </td>
-        <td>
-          {{ item['username'] }}
-        </td>
-        <td>
-          <span :class="chooseRoleClass(item.roles)">{{ item['roles'][0] }}</span>
-        </td>
-        <td>
+        <div class="bg-light clearfix">
           <button
-            class="btn btn-danger"
-            @click="deleteItem(item)">Supprimer <i v-if="delIsLoading && item['@id'] === currentlyDeletingItem['@id']" class="fa fa-circle-o-notch fa-spin" style="font-size:24px"></i>
+            @click="createUser('submitter',1)"
+            class="btn btn-info mr1"><i v-if="createIsLoading && pressedCreatedButton === 1"
+                                        class="fa fa-circle-o-notch fa-spin" style="font-size:24px"></i>Générer un
+            Submitter
           </button>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+          <button
+            @click="createUser('validator', 2)"
+            class="btn btn-success mr1"><i v-if="createIsLoading && pressedCreatedButton === 2"
+                                           class="fa fa-circle-o-notch fa-spin" style="font-size:24px"></i>Générer un
+            Validator
+          </button>
+          <button
+            @click="createUser('admin', 3)"
+            class="btn btn-warning mr1"><i v-if="createIsLoading && pressedCreatedButton === 3"
+                                           class="fa fa-circle-o-notch fa-spin" style="font-size:24px"></i>Générer un
+            Admin
+          </button>
+        </div>
+        <Modal
+          v-show="showCreatedModal"
+          @close="toggleModal()"
+        >
+          <template v-slot:header>
+            Utilisateur créé !
+          </template>
+          <template v-slot:body v-bind:user="user">
+            Voici les credentials pour cet utilisateur : {{ user.username + ':' + user.password }}
+          </template>
+        </Modal>
+        <table class="table table-responsive table-striped table-hover">
+          <thead>
+          <tr>
+            <th>UUID</th>
+            <th>Username</th>
+            <th>Roles</th>
+            <th colspan="2"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr
+            v-for="item in items"
+            :key="item['@id']">
+            <td>
+              {{ item['uuid'] }}
+            </td>
+            <td>
+              {{ item['username'] }}
+            </td>
+            <td>
+              <span :class="chooseRoleClass(item.roles)">{{ item['roles'][0] }}</span>
+            </td>
+            <td>
+              <button
+                class="btn btn-danger"
+                @click="deleteItem(item)">Supprimer <i
+                v-if="delIsLoading && item['@id'] === currentlyDeletingItem['@id']" class="fa fa-circle-o-notch fa-spin"
+                style="font-size:24px"></i>
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -129,16 +141,16 @@ export default {
         this.getPage();
       });
     },
-    deleteItem (item) {
+    deleteItem(item) {
       this.currentlyDeletingItem = item;
       if (window.confirm('Voulez-vous supprimer cet utilisateur?')) {
-        this.del(item).then(() => this.getPage() );
+        this.del(item).then(() => this.getPage());
       }
     },
-    toggleModal(){
+    toggleModal() {
       this.showCreatedModal = !this.showCreatedModal
     },
-    chooseRoleClass(roles){
+    chooseRoleClass(roles) {
       switch (roles[0]) {
         case ROLE.submitter:
           return "badge bg-info";

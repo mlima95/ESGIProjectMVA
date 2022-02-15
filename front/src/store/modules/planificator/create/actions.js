@@ -4,6 +4,8 @@ import * as types from "./mutation_types";
 import {getCurrentUser} from "../../../../utils/utils";
 import {ENTRY_POINT_VALID_PLANIFICATORS} from "../../../../config/entrypoint";
 
+const MIME_TYPE = "application/ld+json";
+
 export const create = ({ commit }, values) => {
   commit(types.PLANIFICATOR_CREATE_SET_ERROR, "");
   commit(types.PLANIFICATOR_CREATE_TOGGLE_LOADING);
@@ -35,15 +37,22 @@ export const create = ({ commit }, values) => {
 export const validHandler = ({commit}, values) => {
   commit(types.PLANIFICATOR_CREATE_SET_ERROR, "");
   commit(types.PLANIFICATOR_CREATE_TOGGLE_LOADING);
+  console.log("actions:" + values);
   values.statusId = "2";
-  return fetch(ENTRY_POINT_VALID_PLANIFICATORS, { method: "POST", body: JSON.stringify(values) })
+
+  const headers = new Headers();
+  headers.set("Accept", MIME_TYPE);
+  headers.set("Content-Type", MIME_TYPE);
+  headers.set("Authorization", "Bearer " + getCurrentUser().token);
+
+  return fetch(ENTRY_POINT_VALID_PLANIFICATORS, { method: "POST", headers, body: JSON.stringify(values) })
     .then((response) => {
       commit(types.PLANIFICATOR_CREATE_TOGGLE_LOADING);
 
       return response.json();
     })
     .then((data) => {
-      commit(types.PLANIFICATOR_CREATE_SET_CREATED, data);
+      // commit(types.PLANIFICATOR_CREATE_SET_CREATED, data);
     })
     .catch((e) => {
       commit(types.PLANIFICATOR_CREATE_TOGGLE_LOADING);

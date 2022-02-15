@@ -18,21 +18,34 @@
             allowfullscreen></iframe>
     <div class="card-body ">
       <h5 class="card-title ">{{ itemCard.dateOfUpload }}</h5>
-      <button class="btn btn-success d-flex justify-content-center" @click="validHandler">Change Status</button>
+      <button class="btn btn-success d-flex justify-content-center" v-on:click="validateHandler()">Change Status</button>
     </div>
   </div>
 </template>
 
 <script>
+import {mapActions} from 'vuex';
+
 export default {
   name: "Card",
-  props: ['itemCard'],
+  props: {
+    itemCard: {
+      type: Object,
+      required: true,
+    }
+  },
+  data() {
+    return {
+      itemData: this.itemCard,
+    }
+  },
   methods: {
     ...mapActions('planificator/create', [
       'validHandler',
     ]),
-    validateHandler(){
-      this.validHandler({itemCard})
+    validateHandler() {
+      console.log(this.itemCard);
+      this.validHandler(this.itemCard);
     }
   }
 }
