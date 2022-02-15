@@ -1,3 +1,5 @@
+import { redirectOnHomepageByRole } from '../utils/utils';
+
 export default [
   {
     path: '/login',

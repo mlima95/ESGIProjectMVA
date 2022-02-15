@@ -36,11 +36,13 @@ export function generateRandomStr(length){
 }
 
 export function redirectOnHomepageByRole(router){
-  // Redirect the the default home page for the role
   if(isCurrentUserHaveRole(ROLE.admin)) {
     router.push('/users')
-  } else /*if(getCurrentUserRole(ROLE.AUTRE_ROLE))*/ {
-    // this.$router.push('/autre-url')
-
-  } /*repeat pour les autres rôles */
+  }else if(isCurrentUserHaveRole(ROLE.validator)) {
+    router.push('/search_themes/')
+  } else if(isCurrentUserHaveRole(ROLE.submitter)) {
+    router.push('/search_themes/create/')
+  }else{
+    router.push('/login')
+  }
 }

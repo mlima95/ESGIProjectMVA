@@ -1,10 +1,12 @@
 import SubmissionError from "../../../../error/SubmissionError";
 import fetch from "../../../../utils/fetch";
+import {getCurrentUser} from "../../../../utils/utils";
 import * as types from "./mutation_types";
 
 export const create = ({ commit }, values) => {
   commit(types.SEARCHTHEME_CREATE_SET_ERROR, "");
   commit(types.SEARCHTHEME_CREATE_TOGGLE_LOADING);
+  values.userId = getCurrentUser().uuid;
 
   return fetch("search_themes", { method: "POST", body: JSON.stringify(values) })
     .then((response) => {
