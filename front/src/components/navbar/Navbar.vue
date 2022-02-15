@@ -66,19 +66,19 @@ export default {
       if (this.user && this.user.roles) {
         this.showDeconnexionBtn = true;
         if (this.user.roles.includes(ROLE.submitter)) {
-          // className = "btn btn-outline-info";
-          // this.currentUserNavbar.push({
-          //   allowedRouteName : "",
-          //   libelle : "",
-          //   className
-          // });
+          const className = "btn btn-outline-info";
+          this.currentUserNavbar.push({
+            allowedRouteName : "SearchThemeCreate",
+            libelle : "Liste des mots-clés",
+            className
+          });
         } else if (this.user.roles.includes(ROLE.validator)) {
-          // className = "btn btn-outline-success";
-          // this.currentUserNavbar.push({
-          //   allowedRouteName : "",
-          //   libelle : "",
-          //   className
-          // });
+          const className = "btn btn-outline-success";
+          this.currentUserNavbar.push(            {
+            allowedRouteName: "PlanificatorList",
+            libelle: "Validation de Planning",
+            className
+          });
         } else if (this.user.roles.includes(ROLE.admin)) {
           const className = 'btn btn-outline-warning';
           this.currentUserNavbar.push(
@@ -93,7 +93,7 @@ export default {
               className
             },
             {
-              allowedRouteName: "",
+              allowedRouteName: "PlanificatorList",
               libelle: "Validation de Planning",
               className
             }

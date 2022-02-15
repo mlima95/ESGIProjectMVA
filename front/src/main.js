@@ -19,9 +19,9 @@ import planificator from './store/modules/planificator/';
 
 
 // Other
-import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap-vue/dist/bootstrap-vue.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css';
 import './assets/css/main.css';
 import filters from './filters';
 Vue.use(BootstrapVue)

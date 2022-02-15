@@ -17,14 +17,19 @@
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen></iframe>
     <div class="card-body ">
-      <h5 class="card-title ">{{ itemCard.dateOfUpload }}</h5>
-      <button class="btn btn-success d-flex justify-content-center" v-on:click="validateHandler()">Change Status</button>
+      <template v-if="modifiable()">
+        <b-form-datepicker id="planificator_dateOfUpload" v-model="itemCard.dateOfUpload" class="mb-2"></b-form-datepicker>
+      </template>
+      <template v-else><h5 class="card-title ">{{ itemCard.dateOfUpload | dateFormat }}</h5></template>
+      <button class="btn btn-success d-flex justify-content-center" v-on:click="createPlanning()">Proposer le planning</button>
+      <button v-if="!modifiable()" class="btn btn-success d-flex justify-content-center" v-on:click="validateHandler()">Valider le planning</button>
     </div>
   </div>
 </template>
 
 <script>
 import {mapActions} from 'vuex';
+import {isCurrentUserHaveRole, ROLE} from '../../../utils/utils.js';
 
 export default {
   name: "Card",
@@ -42,10 +47,20 @@ export default {
   methods: {
     ...mapActions('planificator/create', [
       'validHandler',
+      'create'
     ]),
     validateHandler() {
       console.log(this.itemCard);
       this.validHandler(this.itemCard);
+    },
+    createPlanning() {
+      this.create(this.itemCard).then(() => {
+          this.$router.push({name: "PlanificatorList"});
+        }
+      );
+    },
+    modifiable() {
+     return isCurrentUserHaveRole(ROLE.validator)
     }
   }
 }
