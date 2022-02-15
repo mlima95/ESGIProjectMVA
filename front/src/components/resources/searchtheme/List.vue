@@ -24,99 +24,15 @@
           </router-link>
         </p>
 
-        <table class="table table-responsive table-striped table-hover">
-          <thead>
-          <tr>
-            <th>Id</th>
-            <th>id</th>
-            <th>keyword</th>
-            <th>statusId</th>
-            <th>youtubeLinkId</th>
-            <th>authorId</th>
-            <th>validatorId</th>
-            <th colspan="2"></th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr
-            v-for="item in items"
-            :key="item['@id']">
-            <th scope="row">
-              <router-link
-                v-if="item"
-                :to="{name: 'SearchThemeShow', params: { id: item['@id'] }}">
-                {{ item['@id'] }}
-              </router-link>
-            </th>
-            <td>
-              {{ item['id'] }}
-            </td>
-            <td>
-              {{ item['keyword'] }}
-            </td>
-            <td>
-              {{ item['statusId'] }}
-            </td>
-            <td>
-              {{ item['youtubeLinkId'] }}
-            </td>
-            <td>
-              <template>
-                <div
-                  v-if="Array.isArray(item['rs'])">
-                  <router-link
-                    v-for="link in item['rs']"
-                    :key="link['@id']"
-                    :to="{ name: 'UserShow', params: { id: link['@id'] } }">
-                    {{ link['@id'] }}
-                  </router-link>
-                </div>
-                <router-link
-                  v-else
-                  :to="{ name: 'UserShow', params: { id: item['rs'] } }">
-                  {{ item['rs'] }}
-                </router-link>
-              </template>
-            </td>
-            <td>
-              <template>
-                <div
-                  v-if="Array.isArray(item['rs'])">
-                  <router-link
-                    v-for="link in item['rs']"
-                    :key="link['@id']"
-                    :to="{ name: 'UserShow', params: { id: link['@id'] } }">
-                    {{ link['@id'] }}
-                  </router-link>
-                </div>
-                <router-link
-                  v-else
-                  :to="{ name: 'UserShow', params: { id: item['rs'] } }">
-                  {{ item['rs'] }}
-                </router-link>
-              </template>
-            </td>
-            <td>
-              <router-link
-                :to="{name: 'SearchThemeShow', params: { id: item['@id'] }}">
-              <span
-                class="fa fa-search"
-                aria-hidden="true"></span>
-                <span class="sr-only">Show</span>
-              </router-link>
-            </td>
-            <td>
-              <router-link :to="{name: 'SearchThemeUpdate', params: { id: item['@id'] }}">
-              <span
-                class="fa fa-pencil"
-                aria-hidden="true"></span>
-                <span class="sr-only">Edit</span>
-              </router-link>
-            </td>
-          </tr>
-          </tbody>
-        </table>
 
+    <div>
+      Keywords : 
+      <div>
+        <a v-for="item in items" :key="item['@id']" href="PlanificatorList" style="text-decoration: none">
+          {{ item['keyword'] }} &nbsp;&nbsp;
+        </a>
+      </div>
+    </div>
         <nav aria-label="Page navigation" v-if="view">
           <router-link
             :to="view['hydra:first'] ? view['hydra:first'] : 'SearchThemeContactList'"
@@ -165,6 +81,8 @@ export default {
     ...mapFields('searchtheme/list', {
       error: 'error',
       items: 'items',
+     
+     
       isLoading: 'isLoading',
       view: 'view',
     }),

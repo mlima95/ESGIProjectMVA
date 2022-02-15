@@ -45,7 +45,6 @@ const router = new VueRouter({
   ]
 });
 
-
 export const store = new Vuex.Store({
   // ...
   modules: {

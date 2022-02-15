@@ -17,7 +17,6 @@
         class="fa fa-exclamation-triangle"
         aria-hidden="true">{{ error }}</span>
         </div>
-
         <SearchThemeForm
           :handle-submit="onSendForm"
           :values="item"
@@ -30,7 +29,6 @@
       </div>
     </div>
   </div>
-
 </template>
 
 <script>
@@ -38,9 +36,10 @@ import {createHelpers} from 'vuex-map-fields';
 import {mapActions} from 'vuex';
 import SearchThemeForm from './Form';
 
-const {mapFields} = createHelpers({
-  getterType: 'searchtheme/create/getField',
-  mutationType: 'searchtheme/create/updateField',
+
+const { mapFields } = createHelpers({
+    getterType: 'searchtheme/create/getField',
+    mutationType: 'searchtheme/create/updateField',
 });
 
 export default {
@@ -79,8 +78,12 @@ export default {
       'create',
     ]),
 
-    onSendForm() {
-      this.create(this.item);
+
+    onSendForm () {
+      this.create(this.item).then(() => {
+        this.$router.push({name: "SearchThemeList"});
+      }
+      );
     },
   },
 };
