@@ -6,12 +6,16 @@ import babelPolyfill from 'babel-polyfill'
 import VueRouter from 'vue-router';
 import storedvideoRoutes from './router/storedvideo';
 import userRoutes from './router/user';
-import loginRoutes from './router/login'
+import loginRoutes from './router/login';
+import searchthemeRoutes from './router/searchtheme';
+
 // Add the modules in the store
 import Vuex from 'vuex';
 import storedVideo from './store/modules/storedvideo/';
 import user from './store/modules/user/';
-import auth from './store/modules/auth/'
+import auth from './store/modules/auth/';
+import searchtheme from './store/modules/searchtheme/';
+
 // Other
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/css/main.css';
@@ -30,7 +34,9 @@ const router = new VueRouter({
   routes: [
     ...storedvideoRoutes,
     ...userRoutes,
-    ...loginRoutes
+    ...loginRoutes,
+    ...searchthemeRoutes,
+
   ]
 });
 
@@ -40,7 +46,8 @@ export const store = new Vuex.Store({
   modules: {
     auth,
     user,
-    storedVideo
+    storedVideo,
+    searchtheme
   }
 });
 

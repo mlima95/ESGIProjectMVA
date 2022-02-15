@@ -1,13 +1,14 @@
 <template>
   <div class="vue-template">
     <!-- Navigation -->
-    <nav class="navbar shadow bg-white rounded justify-content-between flex-nowrap flex-row fixed-top">
-      <div class="container">
-        <a class="navbar-brand float-left" href="/">
-          LazyTube
-        </a>
-      </div>
-    </nav>
+<!--    <nav class="navbar shadow bg-white rounded justify-content-between flex-nowrap flex-row fixed-top">-->
+<!--      <div class="container">-->
+<!--        <a class="navbar-brand float-left" href="/">-->
+<!--          LazyTube-->
+<!--        </a>-->
+<!--      </div>-->
+<!--    </nav>-->
+    <Navbar />
     <!-- Main -->
     <div class="App">
       <div class="vertical-center">
@@ -20,8 +21,12 @@
 </template>
 
 <script>
+import Navbar from './components/navbar/Navbar.vue';
 export default {
   name: 'app',
+  components: {
+    Navbar
+  },
   data () {
     return {
     }

@@ -16,7 +16,7 @@ export const ROLE = {
   submitter: 'ROLE_SUBMITTER'
 };
 
-export function getCurrentUserRole(role) {
+export function isCurrentUserHaveRole(role) {
   const user = getCurrentUser();
   if (!user) {
     return false;
@@ -37,7 +37,7 @@ export function generateRandomStr(length){
 
 export function redirectOnHomepageByRole(router){
   // Redirect the the default home page for the role
-  if(getCurrentUserRole(ROLE.admin)) {
+  if(isCurrentUserHaveRole(ROLE.admin)) {
     router.push('/users')
   } else /*if(getCurrentUserRole(ROLE.AUTRE_ROLE))*/ {
     // this.$router.push('/autre-url')

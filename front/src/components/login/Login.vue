@@ -38,7 +38,7 @@
 <script>
 import {mapActions} from 'vuex';
 import {mapState} from 'vuex';
-import {getCurrentUserRole, redirectOnHomepageByRole, ROLE} from '../../utils/utils.js';
+import {isCurrentUserHaveRole, redirectOnHomepageByRole, ROLE} from '../../utils/utils.js';
 
 export default {
   name: "Login",
