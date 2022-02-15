@@ -19,7 +19,7 @@
       :handle-submit="onSendForm"
       :values="item"
       :errors="violations" />
-
+      
     <router-link
       :to="{ name: 'SearchThemeList' }"
       class="btn btn-default">Back to list</router-link>
@@ -34,6 +34,7 @@ import SearchThemeForm from './Form';
 const { mapFields } = createHelpers({
     getterType: 'searchtheme/create/getField',
     mutationType: 'searchtheme/create/updateField',
+
 });
 
 export default {
@@ -73,7 +74,10 @@ export default {
     ]),
 
     onSendForm () {
-      this.create(this.item);
+      this.create(this.item).then(() => {
+        this.$router.push({name: "SearchThemeList"});
+      }
+      );
     },
   },
 };
