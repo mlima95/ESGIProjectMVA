@@ -2,7 +2,7 @@
   <div class="vertical-center">
     <div class="inner-block">
       <div>
-        <h1>New SearchTheme</h1>
+        <h1>New Planificator</h1>
 
         <div
           v-if="isLoading"
@@ -17,34 +17,35 @@
         class="fa fa-exclamation-triangle"
         aria-hidden="true">{{ error }}</span>
         </div>
-        <SearchThemeForm
+
+        <PlanificatorForm
           :handle-submit="onSendForm"
           :values="item"
           :errors="violations"/>
 
         <router-link
-          :to="{ name: 'SearchThemeList' }"
+          :to="{ name: 'PlanificatorList' }"
           class="btn btn-default">Back to list
         </router-link>
       </div>
     </div>
   </div>
+
 </template>
 
 <script>
 import {createHelpers} from 'vuex-map-fields';
 import {mapActions} from 'vuex';
-import SearchThemeForm from './Form';
+import PlanificatorForm from './Form';
 
-
-const { mapFields } = createHelpers({
-    getterType: 'searchtheme/create/getField',
-    mutationType: 'searchtheme/create/updateField',
+const {mapFields} = createHelpers({
+  getterType: 'planificator/create/getField',
+  mutationType: 'planificator/create/updateField',
 });
 
 export default {
   components: {
-    SearchThemeForm,
+    PlanificatorForm,
   },
 
   data() {
@@ -69,20 +70,19 @@ export default {
         return;
       }
 
-      this.$router.push({name: 'SearchThemeUpdate', params: {id: created['@id']}});
+      this.$router.push({name: 'PlanificatorUpdate', params: {id: created['@id']}});
     }
   },
 
   methods: {
-    ...mapActions('searchtheme/create', [
+    ...mapActions('planificator/create', [
       'create',
     ]),
 
-
-    onSendForm () {
+    onSendForm() {
       this.create(this.item).then(() => {
-        this.$router.push({name: "SearchThemeList"});
-      }
+          this.$router.push({name: "PlanificatorList"});
+        }
       );
     },
   },

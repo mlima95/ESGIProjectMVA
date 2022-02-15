@@ -15,7 +15,7 @@ exports.createPlanning = (req, res) => {
         status: req.body.status,
         dateOfUpload: req.body.dateOfUpload,
         userId: req.body.userId,
-        statusId: "3"
+        statusId: "1"
     };
 
     Planificators.create(planificator)
@@ -29,8 +29,10 @@ exports.createPlanning = (req, res) => {
             });
         });
 };
-
+let tour = 0;
 exports.updatePlanificatorByStatus = (req, res) => {
+    tour++;
+    console.log(tour, req.url);
     if(!req.body) {
         res.status(400).send({
             message: "Content can not be empty!"
