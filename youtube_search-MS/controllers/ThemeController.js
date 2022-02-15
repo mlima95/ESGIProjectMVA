@@ -8,19 +8,18 @@ const {
 // Create and Save a new videoData
 exports.createKeyWord = async (req, res) => {
     console.log(req.body);
-    if (!req.body.keyword || !req.body.statusId || !req.body.authorId) {
+    if (!req.body.keyword) {
         res.status(400).send({ message: "Content can not be empty!" });
         return;
     }
 
     const videoData = new ThemeDataModel({
-        statusId: req.body.statusId,
         keyword: req.body.keyword,
         authorId: req.body.authorId,
         validatorId: req.body.validatorId
     });
     await videoData.save().then((data) => {
-        res.status(201).json({id: data._id.toString(), statusId: data.statusId,
+        res.status(201).json({id: data._id.toString(),
             keyword: data.keyword})
     }).catch(err => {
         res.status(500).send({

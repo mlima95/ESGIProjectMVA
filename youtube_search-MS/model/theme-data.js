@@ -6,11 +6,6 @@ const schema = new mongoose.Schema({
         type: String,
         require: true,
     },
-    statusId: {
-        type: String,
-        required: true,
-        default: 0
-    },
     youtubeLinkId: {
         type: Array,
         default: ''
