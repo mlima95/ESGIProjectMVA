@@ -7,7 +7,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-db.sequelize.sync().then(() => {
+db.sequelize.sync({force: true}).then(() => {
     console.log('Drop and Resync Db');
 });
 

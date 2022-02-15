@@ -8,19 +8,24 @@ import storedvideoRoutes from './router/storedvideo';
 import userRoutes from './router/user';
 import loginRoutes from './router/login';
 import searchthemeRoutes from './router/searchtheme';
-
+import planificatorRoutes from './router/planificator';
 // Add the modules in the store
 import Vuex from 'vuex';
 import storedVideo from './store/modules/storedvideo/';
 import user from './store/modules/user/';
 import auth from './store/modules/auth/';
 import searchtheme from './store/modules/searchtheme/';
+import planificator from './store/modules/planificator/';
+
 
 // Other
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 import './assets/css/main.css';
 import filters from './filters';
-
+Vue.use(BootstrapVue)
+Vue.use(IconsPlugin)
 
 Vue.config.productionTip = false;
 
@@ -36,7 +41,7 @@ const router = new VueRouter({
     ...userRoutes,
     ...loginRoutes,
     ...searchthemeRoutes,
-
+    ...planificatorRoutes,
   ]
 });
 
@@ -47,7 +52,8 @@ export const store = new Vuex.Store({
     auth,
     user,
     storedVideo,
-    searchtheme
+    searchtheme,
+    planificator,
   }
 });
 

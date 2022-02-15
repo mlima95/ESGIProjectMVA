@@ -20,9 +20,11 @@ exports.createPlanning = (req, res) => {
 
     Planificators.create(planificator)
         .then(data => {
+            console.log("test");
             res.status(201).json(data)
         })
         .catch(err => {
+            console.log("test1");
             res.status(500).send({
                 message:
                     err.message || 'Some error occurred while creating planning.'

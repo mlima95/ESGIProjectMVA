@@ -100,3 +100,16 @@ label {
   transition: none;
   color: #222222;
 }
+
+/* CARD COMPONENT CLASS */
+
+.card{
+  width: 20%;
+  height: 30%;
+  margin-bottom: 15px;
+  background: #ffffff;
+  box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
+  padding: 10px;
+  border-radius: 15px;
+  transition: all .3s;
+}
